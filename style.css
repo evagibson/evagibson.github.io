@@ -1,1 +1,39 @@
+body {
+font-family: Arial;
+background:#0f172a;
+color:white;
+margin:0;
+}
 
+header {
+text-align:center;
+padding:60px;
+background:#1e293b;
+}
+
+h1{
+font-size:40px;
+}
+
+.about{
+padding:40px;
+max-width:900px;
+margin:auto;
+}
+
+.projects{
+padding:40px;
+}
+
+.project{
+background:#1e293b;
+padding:20px;
+margin:20px;
+border-radius:8px;
+}
+
+footer{
+text-align:center;
+padding:20px;
+background:#1e293b;
+}
