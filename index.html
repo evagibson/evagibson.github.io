@@ -6,7 +6,7 @@
   <title>Eva Kamau | Cybersecurity & Infrastructure Engineer</title>
   <meta
     name="description"
-    content="Portfolio of Eva Kamau, showcasing cybersecurity, infrastructure, monitoring, threat intelligence, and automation projects."
+    content="Portfolio of Eva Kamau showcasing cybersecurity, infrastructure, threat intelligence, monitoring, and automation projects."
   />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -17,86 +17,72 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header class="site-header" id="home">
-    <div class="container">
+  <div class="page-shell">
+    <header class="site-header" id="home">
       <nav class="navbar">
         <a href="#home" class="logo">Eva Kamau</a>
 
         <ul class="nav-links">
-          <li><a href="#about">About</a></li>
-          <li><a href="#projects">Projects</a></li>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#projects" class="active">Projects</a></li>
           <li><a href="#skills">Skills</a></li>
+          <li><a href="#certifications">Certifications</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
       </nav>
 
       <section class="hero">
         <div class="hero-copy">
-          <p class="eyebrow">Cybersecurity • Infrastructure • Automation</p>
-          <h1>Cybersecurity &amp; Infrastructure Engineer</h1>
+          <h1>Hi, I'm Eva Kamau</h1>
+          <p class="hero-role">Cybersecurity &amp; Infrastructure Engineer</p>
           <p class="hero-text">
-            I build practical security and infrastructure projects across Linux,
-            monitoring, networking, threat intelligence, and automation. My work
-            focuses on understanding systems deeply and turning technical ideas
-            into useful, hands-on solutions.
+            I design secure cloud and infrastructure environments using Linux,
+            virtualization, and automation. My work focuses on building secure
+            infrastructure and transforming security data into actionable intelligence.
           </p>
 
           <div class="hero-actions">
-            <a href="#projects" class="btn btn-primary">View Projects</a>
-            <a href="Eva_Kamau_CV.pdf" class="btn btn-secondary">Download CV</a>
-          </div>
-
-          <div class="hero-tags">
-            <span>Threat Intelligence</span>
-            <span>Linux</span>
-            <span>Monitoring</span>
-            <span>Networking</span>
-            <span>Python</span>
+            <a href="#projects" class="primary-btn">View Projects</a>
           </div>
         </div>
 
-        <aside class="hero-card">
-          <p class="card-label">Technical Snapshot</p>
-          <h2>What I work with</h2>
-          <ul class="snapshot-list">
-            <li>Security monitoring and log analysis</li>
-            <li>Linux systems and lab environments</li>
-            <li>Firewall and network configuration</li>
-            <li>Threat intelligence and structured data</li>
-            <li>Python-based automation workflows</li>
-          </ul>
-        </aside>
+        <div class="hero-visual">
+          <div class="glow-ring ring-1"></div>
+          <div class="glow-ring ring-2"></div>
+          <div class="glow-ring ring-3"></div>
+          <img
+            src="https://images.unsplash.com/photo-1545239351-1141bd82e8a6?auto=format&fit=crop&w=900&q=80"
+            alt="Portrait placeholder"
+          />
+        </div>
       </section>
-    </div>
-  </header>
+    </header>
 
-  <main>
-    <section class="section" id="about">
-      <div class="container">
-        <div class="section-heading">
+    <main>
+      <section class="content-section" id="about">
+        <div class="section-intro">
           <p class="section-label">About Me</p>
           <h2>A little about my work</h2>
         </div>
-    
+
         <div class="about-grid">
-          <article class="about-card">
+          <article class="info-card">
             <p>
               I am a technical builder with strong interests in cybersecurity,
               infrastructure, and practical engineering. My work has involved
               security monitoring, threat intelligence, firewall and network
-              configuration, Linux-based systems, Docker environments, and
-              automation with Python.
+              configuration, Linux-based systems, Docker environments, and automation with Python.
             </p>
-            <p>
-              I enjoy building labs and technical workflows that help me
-              understand how systems behave, how attacks are observed, and how
-              defenders can collect and use useful evidence.
+            <p class="about-highlight">
+              I design secure cloud and infrastructure environments using Linux,
+              virtualization, and automation. My work focuses on building secure
+              infrastructure and transforming security data into actionable intelligence.
             </p>
           </article>
-    
-          <article class="about-card">
+
+          <article class="info-card">
             <h3>What this portfolio highlights</h3>
-            <ul class="content-list">
+            <ul class="bullet-list">
               <li>Hands-on technical projects I have built or documented</li>
               <li>My interests across security and infrastructure</li>
               <li>My experience with monitoring, labs, and automation</li>
@@ -104,209 +90,181 @@
             </ul>
           </article>
         </div>
-      </div>
-    </section>
+      </section>
 
-   <section class="section section-alt" id="projects">
-      <div class="container">
-        <div class="section-heading">
+      <section class="content-section projects-section" id="projects">
+        <div class="section-intro">
           <p class="section-label">Projects</p>
           <h2>Featured technical work</h2>
-          <p class="section-text">
-            A selection of projects that reflect my interests in security,
+          <p class="section-subtext">
+            Here are some of the projects that reflect my work across security,
             infrastructure, monitoring, and automation.
           </p>
         </div>
-    
+
         <div class="projects-grid">
           <article class="project-card">
-            <div class="project-card-top">
-              <p class="project-type">Security Lab</p>
-              <h3>SOC Infrastructure Lab</h3>
+            <div class="project-header">
+              <div class="project-icon green">🛡️</div>
+              <div>
+                <h3>SOC Infrastructure Lab</h3>
+                <p class="project-meta">Security Lab</p>
+              </div>
             </div>
-    
-            <p class="project-description">
+
+            <p class="project-text">
               Built and documented a security lab environment involving pfSense,
               firewall rules, VLAN segmentation, Ubuntu, Windows Server, Splunk,
               OpenVAS, and practical security testing workflows.
             </p>
-    
-            <div class="badge-group">
-              <span class="badge">pfSense</span>
-              <span class="badge">Splunk</span>
-              <span class="badge">OpenVAS</span>
-              <span class="badge">Ubuntu</span>
-              <span class="badge">Windows Server</span>
-            </div>
-    
-            <div class="project-links">
-              <a href="#" class="project-button">View Project</a>
-              <a href="#" class="text-link">Documentation</a>
+
+            <div class="project-actions">
+              <a href="#" class="project-btn">View Project</a>
             </div>
           </article>
-    
+
           <article class="project-card">
-            <div class="project-card-top">
-              <p class="project-type">Threat Intelligence</p>
-              <h3>Honeypot Threat Intelligence Pipeline</h3>
+            <div class="project-header">
+              <div class="project-icon gold">☁️</div>
+              <div>
+                <h3>Honeypot Threat Intelligence Pipeline</h3>
+                <p class="project-meta">Threat Intelligence</p>
+              </div>
             </div>
-    
-            <p class="project-description">
+
+            <p class="project-text">
               Developed a project that processes honeypot logs, maps behaviors to
               MITRE ATT&amp;CK, and generates STIX 2.1 threat intelligence bundles
               for structured analyst use.
             </p>
-    
-            <div class="badge-group">
-              <span class="badge">Python</span>
-              <span class="badge">Cowrie</span>
-              <span class="badge">T-Pot</span>
-              <span class="badge">MITRE ATT&amp;CK</span>
-              <span class="badge">STIX 2.1</span>
-            </div>
-    
-            <div class="project-links">
-              <a href="#" class="project-button">View Project</a>
-              <a href="#" class="text-link">Case Study</a>
+
+            <div class="project-actions">
+              <a href="#" class="project-btn">View Project</a>
             </div>
           </article>
-    
+
           <article class="project-card">
-            <div class="project-card-top">
-              <p class="project-type">Containers</p>
-              <h3>Docker Infrastructure Lab</h3>
+            <div class="project-header">
+              <div class="project-icon blue">🐳</div>
+              <div>
+                <h3>Docker Infrastructure Lab</h3>
+                <p class="project-meta">Containers</p>
+              </div>
             </div>
-    
-            <p class="project-description">
+
+            <p class="project-text">
               Worked with Docker and Portainer to deploy and manage services in a
               lab environment, strengthening my understanding of containerized
               workflows and infrastructure management.
             </p>
-    
-            <div class="badge-group">
-              <span class="badge">Docker</span>
-              <span class="badge">Portainer</span>
-              <span class="badge">Linux</span>
-              <span class="badge">Containers</span>
-            </div>
-    
-            <div class="project-links">
-              <a href="#" class="project-button">View Project</a>
-              <a href="#" class="text-link">Notes</a>
+
+            <div class="project-actions">
+              <a href="#" class="project-btn">View Project</a>
             </div>
           </article>
-    
+
           <article class="project-card">
-            <div class="project-card-top">
-              <p class="project-type">Monitoring</p>
-              <h3>Log Analysis and Detection Work</h3>
+            <div class="project-header">
+              <div class="project-icon orange">📡</div>
+              <div>
+                <h3>Log Analysis and Detection Work</h3>
+                <p class="project-meta">Monitoring</p>
+              </div>
             </div>
-    
-            <p class="project-description">
+
+            <p class="project-text">
               Worked on analyzing logs and identifying suspicious behavior,
               including abnormal login attempts, monitoring workflows, and using
               defensive tools to support security visibility.
             </p>
-    
-            <div class="badge-group">
-              <span class="badge">Logs</span>
-              <span class="badge">Detection</span>
-              <span class="badge">Monitoring</span>
-              <span class="badge">Analysis</span>
-            </div>
-    
-            <div class="project-links">
-              <a href="#" class="project-button">View Project</a>
+
+            <div class="project-actions">
+              <a href="#" class="project-btn">View Project</a>
             </div>
           </article>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="section" id="skills">
-      <div class="container">
-        <div class="section-heading">
-          <p class="section-label">Skills &amp; Tools</p>
+      <section class="content-section" id="skills">
+        <div class="section-intro">
+          <p class="section-label">Skills</p>
           <h2>Technologies I work with</h2>
         </div>
 
         <div class="skills-grid">
-          <article class="skill-card">
+          <article class="skill-column">
             <h3>Security</h3>
-            <div class="badge-group">
-              <span class="badge">Splunk</span>
-              <span class="badge">OpenVAS</span>
-              <span class="badge">Honeypots</span>
-              <span class="badge">Threat Intelligence</span>
-              <span class="badge">MITRE ATT&amp;CK</span>
-              <span class="badge">STIX 2.1</span>
-            </div>
+            <p>Splunk, OpenVAS, Honeypots, Threat Intelligence, MITRE ATT&amp;CK, STIX 2.1</p>
           </article>
 
-          <article class="skill-card">
+          <article class="skill-column">
             <h3>Infrastructure</h3>
-            <div class="badge-group">
-              <span class="badge">Linux</span>
-              <span class="badge">Ubuntu</span>
-              <span class="badge">Windows Server</span>
-              <span class="badge">pfSense</span>
-              <span class="badge">VLANs</span>
-              <span class="badge">Virtual Machines</span>
-            </div>
+            <p>Linux, Ubuntu, Windows Server, pfSense, VLANs, Virtual Machines</p>
           </article>
 
-          <article class="skill-card">
+          <article class="skill-column">
             <h3>Platforms &amp; Tools</h3>
-            <div class="badge-group">
-              <span class="badge">Docker</span>
-              <span class="badge">Portainer</span>
-              <span class="badge">Git</span>
-              <span class="badge">GitHub</span>
-              <span class="badge">GitHub Pages</span>
-            </div>
+            <p>Docker, Portainer, Git, GitHub, GitHub Pages</p>
           </article>
 
-          <article class="skill-card">
+          <article class="skill-column">
             <h3>Programming</h3>
-            <div class="badge-group">
-              <span class="badge">Python</span>
-              <span class="badge">Bash</span>
-              <span class="badge">Rust</span>
-              <span class="badge">Automation</span>
-            </div>
+            <p>Python, Bash, Rust, Automation</p>
           </article>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="section contact-section" id="contact">
-      <div class="container">
-        <div class="contact-card">
-          <div>
+      <section class="content-section" id="certifications">
+        <div class="section-intro">
+          <p class="section-label">Certifications</p>
+          <h2>Learning and growth</h2>
+        </div>
+
+        <div class="certifications-grid">
+          <article class="info-card">
+            <h3>Current Learning</h3>
+            <ul class="bullet-list">
+              <li>Git and GitHub workflow</li>
+              <li>GitHub Pages portfolio development</li>
+              <li>Cloud and infrastructure fundamentals</li>
+            </ul>
+          </article>
+
+          <article class="info-card">
+            <h3>Practice Platforms</h3>
+            <ul class="bullet-list">
+              <li>TryHackMe</li>
+              <li>Hack The Box</li>
+              <li>Self-built labs and experiments</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section contact-section" id="contact">
+        <div class="contact-grid">
+          <div class="contact-copy">
             <p class="section-label">Contact</p>
             <h2>Let’s connect</h2>
-            <p class="section-text">
+            <p class="section-subtext">
               I’m interested in technical opportunities, collaborative projects,
-              and conversations around cybersecurity, infrastructure, and
-              engineering growth.
+              and conversations around cybersecurity, infrastructure, and engineering growth.
             </p>
           </div>
 
           <div class="contact-links">
-            <a href="mailto:your-email@example.com" class="contact-button">Email</a>
-            <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer" class="contact-button">GitHub</a>
-            <a href="https://www.linkedin.com/in/your-linkedin/" target="_blank" rel="noopener noreferrer" class="contact-button">LinkedIn</a>
+            <a href="mailto:your-email@example.com" class="contact-btn">Email</a>
+            <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer" class="contact-btn">GitHub</a>
+            <a href="https://www.linkedin.com/in/your-linkedin/" target="_blank" rel="noopener noreferrer" class="contact-btn">LinkedIn</a>
           </div>
         </div>
-      </div>
-    </section>
-  </main>
+      </section>
+    </main>
 
-  <footer class="site-footer">
-    <div class="container footer-inner">
+    <footer class="site-footer">
       <p>© 2026 Eva Kamau</p>
       <p>Built with HTML, CSS, and GitHub Pages.</p>
-    </div>
-  </footer>
+    </footer>
+  </div>
 </body>
 </html>
