@@ -1,51 +1,421 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Eva Kamau | Cloud Infrastructure Engineer</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eva Kamau | Cybersecurity & Infrastructure Portfolio</title>
+  <meta
+    name="description"
+    content="Portfolio of Eva Kamau, showcasing work in cybersecurity, infrastructure, threat intelligence, monitoring, automation, and technical lab projects."
+  />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
+  <header class="site-header" id="home">
+    <div class="container">
+      <nav class="navbar">
+        <a href="#home" class="logo">Eva Kamau</a>
 
-<header>
-<h1>Eva Kamau</h1>
-<p>Cloud Infrastructure & Security Engineer</p>
-</header>
+        <ul class="nav-links">
+          <li><a href="#about">About</a></li>
+          <li><a href="#focus">Focus</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#journey">Journey</a></li>
+          <li><a href="#learning">Learning</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
 
-<section class="about">
-<h2>About Me</h2>
-<p>
-I build secure cloud and infrastructure environments using Linux,
-virtualization, networking, and automation. My work focuses on
-infrastructure security, monitoring, and threat intelligence.
-</p>
-</section>
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Cybersecurity • Infrastructure • Automation</p>
+          <h1>Security engineer building labs, monitoring workflows, and practical technical systems.</h1>
+          <p class="hero-text">
+            I work across cybersecurity, infrastructure, threat intelligence, and
+            automation. My projects focus on turning technical problems into
+            practical systems, from security monitoring labs and firewall
+            configuration to honeypot intelligence pipelines and infrastructure experimentation.
+          </p>
 
-<section class="projects">
+          <div class="hero-actions">
+            <a href="#projects" class="btn btn-primary">Explore Projects</a>
+            <a href="Eva_Kamau_CV.pdf" class="btn btn-secondary">Download CV</a>
+          </div>
 
-<h2>Projects</h2>
+          <div class="hero-tags">
+            <span>Threat Intelligence</span>
+            <span>Linux & Labs</span>
+            <span>Monitoring</span>
+            <span>Networking</span>
+            <span>Python</span>
+            <span>Cloud Learning</span>
+          </div>
+        </div>
 
-<div class="project">
-<h3>SOC Infrastructure Lab</h3>
-<p>pfSense firewall, VLAN segmentation, Splunk SIEM, OpenVAS vulnerability scanning.</p>
-</div>
+        <aside class="hero-panel">
+          <p class="panel-label">Current Direction</p>
+          <h2>Where my work sits</h2>
+          <p>
+            My background sits at the intersection of cybersecurity,
+            infrastructure, and technical problem solving. I’m especially
+            interested in monitoring, threat intelligence, system security,
+            and growing into cloud and infrastructure engineering.
+          </p>
 
-<div class="project">
-<h3>Honeypot Threat Intelligence Pipeline</h3>
-<p>T-Pot honeypot deployment, MITRE ATT&CK mapping, STIX threat intelligence automation.</p>
-</div>
+          <div class="panel-grid">
+            <div class="panel-box">
+              <span class="panel-title">Core</span>
+              <strong>Security + Infrastructure</strong>
+            </div>
+            <div class="panel-box">
+              <span class="panel-title">Projects</span>
+              <strong>Labs + Automation</strong>
+            </div>
+            <div class="panel-box">
+              <span class="panel-title">Strengths</span>
+              <strong>Hands-on Technical Work</strong>
+            </div>
+            <div class="panel-box">
+              <span class="panel-title">Growth</span>
+              <strong>Cloud + GitHub Portfolio</strong>
+            </div>
+          </div>
+        </aside>
+      </section>
+    </div>
+  </header>
 
-<div class="project">
-<h3>Docker Infrastructure Lab</h3>
-<p>Docker and Portainer environment for container deployment and monitoring.</p>
-</div>
+  <main>
+    <section class="section" id="about">
+      <div class="container">
+        <div class="section-heading">
+          <p class="section-label">About Me</p>
+          <h2>My technical identity</h2>
+        </div>
 
-</section>
+        <div class="two-column">
+          <div class="card">
+            <p>
+              I am a technical builder with a strong interest in cybersecurity and
+              infrastructure. My work has involved threat intelligence,
+              security monitoring, firewall and network configuration,
+              Linux-based systems, Docker environments, and automation with Python.
+            </p>
+            <p>
+              I enjoy building practical environments that help me understand how
+              systems work, how attacks are observed, and how defenders can
+              collect, analyze, and act on technical data. My portfolio reflects
+              that hands-on journey.
+            </p>
+          </div>
 
-<footer>
-<p>© Eva Kamau</p>
-</footer>
+          <div class="card">
+            <h3>What this portfolio shows</h3>
+            <ul class="list">
+              <li>Projects I have built or documented</li>
+              <li>My technical interests across security and infrastructure</li>
+              <li>How I approach monitoring, lab work, and automation</li>
+              <li>How I am growing toward cloud and infrastructure engineering</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
 
+    <section class="section alt" id="focus">
+      <div class="container">
+        <div class="section-heading">
+          <p class="section-label">Focus Areas</p>
+          <h2>What I work on</h2>
+        </div>
+
+        <div class="focus-grid">
+          <article class="card focus-card">
+            <h3>Cybersecurity</h3>
+            <p>
+              Security monitoring, log analysis, vulnerability scanning,
+              attacker activity observation, and hands-on defensive practice.
+            </p>
+            <div class="pill-group">
+              <span class="pill">Splunk</span>
+              <span class="pill">OpenVAS</span>
+              <span class="pill">Honeypots</span>
+              <span class="pill">Threat Analysis</span>
+            </div>
+          </article>
+
+          <article class="card focus-card">
+            <h3>Infrastructure</h3>
+            <p>
+              Lab building, Linux systems, virtualization, firewall setup,
+              networking, segmentation, and system configuration.
+            </p>
+            <div class="pill-group">
+              <span class="pill">Linux</span>
+              <span class="pill">pfSense</span>
+              <span class="pill">VLANs</span>
+              <span class="pill">Virtual Machines</span>
+            </div>
+          </article>
+
+          <article class="card focus-card">
+            <h3>Automation</h3>
+            <p>
+              Using code and structured workflows to transform raw technical
+              data into useful outputs for analysis and decision-making.
+            </p>
+            <div class="pill-group">
+              <span class="pill">Python</span>
+              <span class="pill">Bash</span>
+              <span class="pill">STIX 2.1</span>
+              <span class="pill">MITRE ATT&CK</span>
+            </div>
+          </article>
+
+          <article class="card focus-card">
+            <h3>Growth Path</h3>
+            <p>
+              Expanding from security-heavy lab work into stronger Git/GitHub,
+              cloud fundamentals, and infrastructure engineering practice.
+            </p>
+            <div class="pill-group">
+              <span class="pill">GitHub</span>
+              <span class="pill">Portfolio Building</span>
+              <span class="pill">Cloud Learning</span>
+              <span class="pill">DevOps Foundations</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="projects">
+      <div class="container">
+        <div class="section-heading">
+          <p class="section-label">Projects</p>
+          <h2>Selected technical work</h2>
+          <p class="section-text">
+            These projects reflect the kind of work I enjoy most: building,
+            documenting, analyzing, and improving practical technical systems.
+          </p>
+        </div>
+
+        <div class="project-grid">
+          <article class="card project-card">
+            <p class="project-category">Security Lab</p>
+            <h3>SOC Infrastructure Lab</h3>
+            <p>
+              Built and documented a practical lab environment involving pfSense,
+              firewall rules, VLAN segmentation, Ubuntu, Windows Server, Splunk,
+              OpenVAS, and security testing workflows.
+            </p>
+            <div class="pill-group">
+              <span class="pill">pfSense</span>
+              <span class="pill">Splunk</span>
+              <span class="pill">OpenVAS</span>
+              <span class="pill">Ubuntu</span>
+              <span class="pill">Windows Server</span>
+            </div>
+            <div class="project-links">
+              <a href="#" class="inline-link">GitHub Repo</a>
+              <a href="#" class="inline-link">Documentation</a>
+            </div>
+          </article>
+
+          <article class="card project-card">
+            <p class="project-category">Threat Intelligence</p>
+            <h3>Honeypot Threat Intelligence Pipeline</h3>
+            <p>
+              Developed a project that processes honeypot logs, maps behaviors to
+              MITRE ATT&amp;CK, and generates STIX 2.1 threat intelligence bundles
+              for structured analyst use.
+            </p>
+            <div class="pill-group">
+              <span class="pill">Python</span>
+              <span class="pill">Cowrie</span>
+              <span class="pill">T-Pot</span>
+              <span class="pill">MITRE ATT&CK</span>
+              <span class="pill">STIX 2.1</span>
+            </div>
+            <div class="project-links">
+              <a href="#" class="inline-link">GitHub Repo</a>
+              <a href="#" class="inline-link">Case Study</a>
+            </div>
+          </article>
+
+          <article class="card project-card">
+            <p class="project-category">Containers</p>
+            <h3>Docker Infrastructure Lab</h3>
+            <p>
+              Worked with Docker and Portainer to deploy and manage services in a
+              lab environment, strengthening my understanding of containerized
+              workflows and infrastructure management.
+            </p>
+            <div class="pill-group">
+              <span class="pill">Docker</span>
+              <span class="pill">Portainer</span>
+              <span class="pill">Linux</span>
+              <span class="pill">Containers</span>
+            </div>
+            <div class="project-links">
+              <a href="#" class="inline-link">GitHub Repo</a>
+              <a href="#" class="inline-link">Notes</a>
+            </div>
+          </article>
+
+          <article class="card project-card">
+            <p class="project-category">Monitoring & Analysis</p>
+            <h3>Log Analysis and Detection Work</h3>
+            <p>
+              Worked on analyzing logs and identifying suspicious behavior,
+              including abnormal login attempts, monitoring workflows, and using
+              defensive tools to support security visibility.
+            </p>
+            <div class="pill-group">
+              <span class="pill">Logs</span>
+              <span class="pill">Detection</span>
+              <span class="pill">Monitoring</span>
+              <span class="pill">Analysis</span>
+            </div>
+            <div class="project-links">
+              <a href="#" class="inline-link">GitHub Repo</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="journey">
+      <div class="container">
+        <div class="section-heading">
+          <p class="section-label">Journey</p>
+          <h2>How my work has been developing</h2>
+        </div>
+
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-marker"></div>
+            <div class="card timeline-card">
+              <h3>Security-focused technical foundation</h3>
+              <p>
+                I started by building skills in cybersecurity, practical defense,
+                technical labs, and understanding attacker behavior through
+                observation and analysis.
+              </p>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-marker"></div>
+            <div class="card timeline-card">
+              <h3>Hands-on infrastructure and lab building</h3>
+              <p>
+                I expanded into Linux systems, networking, firewall
+                configuration, virtualization, Docker environments, and security
+                monitoring setups that made my work more operational and practical.
+              </p>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-marker"></div>
+            <div class="card timeline-card">
+              <h3>Threat intelligence and automation work</h3>
+              <p>
+                My thesis and project work pushed me deeper into automation,
+                structured threat data, MITRE ATT&amp;CK mapping, and turning raw
+                evidence into usable intelligence.
+              </p>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-marker"></div>
+            <div class="card timeline-card">
+              <h3>Current direction</h3>
+              <p>
+                I am now focusing on presenting my work clearly, strengthening my
+                Git/GitHub workflow, and growing into cloud and infrastructure
+                engineering without losing my cybersecurity foundation.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="learning">
+      <div class="container">
+        <div class="section-heading">
+          <p class="section-label">Learning</p>
+          <h2>What I’m learning and building next</h2>
+        </div>
+
+        <div class="three-column">
+          <div class="card">
+            <h3>Current Learning</h3>
+            <ul class="list">
+              <li>Git and GitHub workflow</li>
+              <li>GitHub Pages portfolio development</li>
+              <li>Cloud and infrastructure fundamentals</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3>Practice Platforms</h3>
+            <ul class="list">
+              <li>TryHackMe</li>
+              <li>Hack The Box</li>
+              <li>Self-built labs and experiments</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3>Next Direction</h3>
+            <ul class="list">
+              <li>Stronger cloud lab projects</li>
+              <li>Better project documentation on GitHub</li>
+              <li>More polished public technical portfolio</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section contact-section" id="contact">
+      <div class="container">
+        <div class="card contact-card">
+          <div>
+            <p class="section-label">Contact</p>
+            <h2>Let’s connect</h2>
+            <p class="section-text">
+              I’m always interested in technical opportunities, collaborative
+              projects, and conversations around cybersecurity, infrastructure,
+              and engineering growth.
+            </p>
+          </div>
+
+          <div class="contact-links">
+            <a href="mailto:your-email@example.com" class="contact-button">Email</a>
+            <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer" class="contact-button">GitHub</a>
+            <a href="https://www.linkedin.com/in/your-linkedin/" target="_blank" rel="noopener noreferrer" class="contact-button">LinkedIn</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© 2026 Eva Kamau</p>
+      <p>Built with HTML, CSS, and GitHub Pages.</p>
+    </div>
+  </footer>
 </body>
 </html>
