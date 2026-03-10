@@ -77,9 +77,9 @@
           <p class="section-label">About Me</p>
           <h2>A little about my work</h2>
         </div>
-
+    
         <div class="about-grid">
-          <div class="card">
+          <article class="about-card">
             <p>
               I am a technical builder with strong interests in cybersecurity,
               infrastructure, and practical engineering. My work has involved
@@ -92,9 +92,9 @@
               understand how systems behave, how attacks are observed, and how
               defenders can collect and use useful evidence.
             </p>
-          </div>
-
-          <div class="card">
+          </article>
+    
+          <article class="about-card">
             <h3>What this portfolio highlights</h3>
             <ul class="content-list">
               <li>Hands-on technical projects I have built or documented</li>
@@ -102,12 +102,12 @@
               <li>My experience with monitoring, labs, and automation</li>
               <li>The tools and technologies I use most often</li>
             </ul>
-          </div>
+          </article>
         </div>
       </div>
     </section>
 
-    <section class="section section-alt" id="projects">
+   <section class="section section-alt" id="projects">
       <div class="container">
         <div class="section-heading">
           <p class="section-label">Projects</p>
@@ -117,16 +117,20 @@
             infrastructure, monitoring, and automation.
           </p>
         </div>
-
+    
         <div class="projects-grid">
           <article class="project-card">
-            <p class="project-type">Security Lab</p>
-            <h3>SOC Infrastructure Lab</h3>
+            <div class="project-card-top">
+              <p class="project-type">Security Lab</p>
+              <h3>SOC Infrastructure Lab</h3>
+            </div>
+    
             <p class="project-description">
               Built and documented a security lab environment involving pfSense,
               firewall rules, VLAN segmentation, Ubuntu, Windows Server, Splunk,
               OpenVAS, and practical security testing workflows.
             </p>
+    
             <div class="badge-group">
               <span class="badge">pfSense</span>
               <span class="badge">Splunk</span>
@@ -134,20 +138,25 @@
               <span class="badge">Ubuntu</span>
               <span class="badge">Windows Server</span>
             </div>
+    
             <div class="project-links">
-              <a href="#" class="text-link">GitHub Repo</a>
+              <a href="#" class="project-button">View Project</a>
               <a href="#" class="text-link">Documentation</a>
             </div>
           </article>
-
+    
           <article class="project-card">
-            <p class="project-type">Threat Intelligence</p>
-            <h3>Honeypot Threat Intelligence Pipeline</h3>
+            <div class="project-card-top">
+              <p class="project-type">Threat Intelligence</p>
+              <h3>Honeypot Threat Intelligence Pipeline</h3>
+            </div>
+    
             <p class="project-description">
               Developed a project that processes honeypot logs, maps behaviors to
               MITRE ATT&amp;CK, and generates STIX 2.1 threat intelligence bundles
               for structured analyst use.
             </p>
+    
             <div class="badge-group">
               <span class="badge">Python</span>
               <span class="badge">Cowrie</span>
@@ -155,48 +164,59 @@
               <span class="badge">MITRE ATT&amp;CK</span>
               <span class="badge">STIX 2.1</span>
             </div>
+    
             <div class="project-links">
-              <a href="#" class="text-link">GitHub Repo</a>
+              <a href="#" class="project-button">View Project</a>
               <a href="#" class="text-link">Case Study</a>
             </div>
           </article>
-
+    
           <article class="project-card">
-            <p class="project-type">Containers</p>
-            <h3>Docker Infrastructure Lab</h3>
+            <div class="project-card-top">
+              <p class="project-type">Containers</p>
+              <h3>Docker Infrastructure Lab</h3>
+            </div>
+    
             <p class="project-description">
               Worked with Docker and Portainer to deploy and manage services in a
               lab environment, strengthening my understanding of containerized
               workflows and infrastructure management.
             </p>
+    
             <div class="badge-group">
               <span class="badge">Docker</span>
               <span class="badge">Portainer</span>
               <span class="badge">Linux</span>
               <span class="badge">Containers</span>
             </div>
+    
             <div class="project-links">
-              <a href="#" class="text-link">GitHub Repo</a>
+              <a href="#" class="project-button">View Project</a>
               <a href="#" class="text-link">Notes</a>
             </div>
           </article>
-
+    
           <article class="project-card">
-            <p class="project-type">Monitoring</p>
-            <h3>Log Analysis and Detection Work</h3>
+            <div class="project-card-top">
+              <p class="project-type">Monitoring</p>
+              <h3>Log Analysis and Detection Work</h3>
+            </div>
+    
             <p class="project-description">
               Worked on analyzing logs and identifying suspicious behavior,
               including abnormal login attempts, monitoring workflows, and using
               defensive tools to support security visibility.
             </p>
+    
             <div class="badge-group">
               <span class="badge">Logs</span>
               <span class="badge">Detection</span>
               <span class="badge">Monitoring</span>
               <span class="badge">Analysis</span>
             </div>
+    
             <div class="project-links">
-              <a href="#" class="text-link">GitHub Repo</a>
+              <a href="#" class="project-button">View Project</a>
             </div>
           </article>
         </div>
