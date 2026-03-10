@@ -93,7 +93,7 @@ a {
   display: grid;
   grid-template-columns: 1.05fr 0.95fr;
   align-items: center;
-  gap: 2rem;
+  gap: 3rem;
   padding: 3.5rem 0 2rem;
 }
 
@@ -122,44 +122,25 @@ a {
   max-width: 520px;
 }
 
-.hero-actions {
-  display: flex;
-  gap: 1rem;
-}
-
-.primary-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 56px;
-  padding: 0.95rem 1.5rem;
-  background: var(--button);
-  color: #091426;
-  border-radius: 14px;
-  font-weight: 800;
-  font-size: 1rem;
-  transition: transform 0.2s ease, opacity 0.2s ease;
-}
-
-.primary-btn:hover {
-  transform: translateY(-2px);
-  opacity: 0.95;
-}
-
 .hero-visual {
   position: relative;
+  width: 100%;
+  max-width: 460px;
+  aspect-ratio: 1 / 1;
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 480px;
 }
 
 .hero-visual img {
   position: relative;
   z-index: 2;
-  width: min(420px, 92%);
-  border-radius: 22px;
+  width: 72%;
+  max-width: 320px;
+  aspect-ratio: 3 / 4;
   object-fit: cover;
+  border-radius: 24px;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
 }
 
@@ -167,24 +148,24 @@ a {
   position: absolute;
   border-radius: 50%;
   border: 1px solid rgba(121, 188, 255, 0.14);
-  background: radial-gradient(circle, rgba(105, 162, 255, 0.1), rgba(0, 0, 0, 0));
+  background: radial-gradient(circle, rgba(105, 162, 255, 0.08), rgba(0, 0, 0, 0));
 }
 
 .ring-1 {
-  width: 420px;
-  height: 420px;
+  width: 100%;
+  height: 100%;
   z-index: 0;
 }
 
 .ring-2 {
-  width: 330px;
-  height: 330px;
+  width: 78%;
+  height: 78%;
   z-index: 0;
 }
 
 .ring-3 {
-  width: 250px;
-  height: 250px;
+  width: 58%;
+  height: 58%;
   z-index: 0;
 }
 
@@ -450,6 +431,30 @@ a {
   }
 }
 
+@media (max-width: 1100px) {
+  .hero,
+  .about-grid,
+  .projects-grid,
+  .skills-grid,
+  .certifications-grid,
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero {
+    min-height: auto;
+    gap: 2rem;
+  }
+
+  .hero-copy {
+    max-width: 100%;
+  }
+
+  .hero-visual {
+    max-width: 360px;
+  }
+}
+
 @media (max-width: 760px) {
   .page-shell {
     width: min(var(--max-width), calc(100% - 1rem));
@@ -485,7 +490,12 @@ a {
   }
 
   .hero-visual {
-    min-height: 320px;
+    max-width: 280px;
+  }
+
+  .hero-visual img {
+    width: 76%;
+    max-width: 220px;
   }
 
   .site-footer {
