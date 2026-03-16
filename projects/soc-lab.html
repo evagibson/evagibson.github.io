@@ -329,37 +329,39 @@
       padding-left: 1.1rem;
     }
 
-    .tool-grid{
+    .tool-card-grid{
       display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
       gap:1.5rem;
+      margin-top:2rem;
     }
     
     .tool-card{
-      padding:1.6rem;
-      border-radius:20px;
-      background:rgba(255,255,255,0.02);
-      border:1px solid rgba(255,255,255,0.08);
-      transition:transform .2s ease;
+      background:#111;
+      border:1px solid #2a2a2a;
+      border-radius:10px;
+      padding:1.8rem;
+      transition:0.25s;
     }
     
     .tool-card:hover{
-      transform:translateY(-4px);
+      transform:translateY(-6px);
+      border-color:#4a8cff;
+    }
+    
+    .tool-icon{
+      font-size:1.8rem;
+      margin-bottom:0.7rem;
     }
     
     .tool-card h3{
-      margin-top:0;
-      margin-bottom:.6rem;
+      margin-bottom:0.5rem;
     }
     
     .tool-card p{
-      color:#aeb9d1;
-    }
-    
-    .tool-card ul{
-      margin-top:.7rem;
-      padding-left:1.2rem;
-      color:#aeb9d1;
+      font-size:0.95rem;
+      line-height:1.5;
+      color:#bdbdbd;
     }
     
 
