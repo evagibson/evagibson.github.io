@@ -329,6 +329,40 @@
       padding-left: 1.1rem;
     }
 
+    .tool-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      gap:1.5rem;
+    }
+    
+    .tool-card{
+      padding:1.6rem;
+      border-radius:20px;
+      background:rgba(255,255,255,0.02);
+      border:1px solid rgba(255,255,255,0.08);
+      transition:transform .2s ease;
+    }
+    
+    .tool-card:hover{
+      transform:translateY(-4px);
+    }
+    
+    .tool-card h3{
+      margin-top:0;
+      margin-bottom:.6rem;
+    }
+    
+    .tool-card p{
+      color:#aeb9d1;
+    }
+    
+    .tool-card ul{
+      margin-top:.7rem;
+      padding-left:1.2rem;
+      color:#aeb9d1;
+    }
+    
+
     .screenshot-placeholder {
       min-height: 240px;
       border-radius: 20px;
@@ -552,35 +586,99 @@
 
       <section class="section">
         <div class="container">
+      
           <div class="section-heading">
-            <p class="section-label">Tools Used</p>
-            <h2>Technologies in the project</h2>
+            <p class="section-label">Lab Components</p>
+            <h2>Technologies used in the SOC lab</h2>
           </div>
-
-          <div class="content-grid">
-            <article class="content-card">
-              <h3>Infrastructure & Systems</h3>
-              <div class="badge-group">
-                <span class="badge">Linux</span>
-                <span class="badge">Ubuntu</span>
-                <span class="badge">Windows Server</span>
-                <span class="badge">Virtual Machines</span>
-                <span class="badge">Docker</span>
-                <span class="badge">Portainer</span>
-              </div>
-            </article>
-
-            <article class="content-card">
-              <h3>Security & Networking</h3>
-              <div class="badge-group">
-                <span class="badge">pfSense</span>
-                <span class="badge">Firewall Rules</span>
-                <span class="badge">VLANs</span>
-                <span class="badge">Splunk</span>
-                <span class="badge">OpenVAS</span>
-                <span class="badge">Monitoring</span>
-              </div>
-            </article>
+      
+          <div class="tool-grid">
+      
+            <div class="tool-card">
+              <h3>pfSense Firewall</h3>
+              <p>
+                pfSense was used as the perimeter firewall and gateway for the lab.
+                It handled network segmentation, traffic filtering, and rule
+                configuration between internal lab networks.
+              </p>
+      
+              <ul>
+                <li>Firewall rule configuration</li>
+                <li>Network segmentation</li>
+                <li>Traffic monitoring and control</li>
+              </ul>
+            </div>
+      
+            <div class="tool-card">
+              <h3>Splunk Monitoring</h3>
+              <p>
+                Splunk acted as the central logging and monitoring platform
+                within the SOC environment.
+              </p>
+      
+              <ul>
+                <li>Log ingestion from lab systems</li>
+                <li>Search and analysis dashboards</li>
+                <li>Security event investigation</li>
+              </ul>
+            </div>
+      
+            <div class="tool-card">
+              <h3>OpenVAS Scanner</h3>
+              <p>
+                OpenVAS was deployed to assess vulnerabilities in hosts
+                within the lab network.
+              </p>
+      
+              <ul>
+                <li>Network vulnerability scanning</li>
+                <li>Host risk assessment</li>
+                <li>Security reporting</li>
+              </ul>
+            </div>
+      
+            <div class="tool-card">
+              <h3>Ubuntu Servers</h3>
+              <p>
+                Ubuntu systems were used as the main Linux infrastructure
+                inside the lab environment.
+              </p>
+      
+              <ul>
+                <li>Service hosting</li>
+                <li>System administration</li>
+                <li>Linux infrastructure management</li>
+              </ul>
+            </div>
+      
+            <div class="tool-card">
+              <h3>Windows Server</h3>
+              <p>
+                Windows Server machines simulated enterprise infrastructure
+                components within the SOC lab.
+              </p>
+      
+              <ul>
+                <li>Enterprise system simulation</li>
+                <li>Windows administration</li>
+                <li>Integration with monitoring tools</li>
+              </ul>
+            </div>
+      
+            <div class="tool-card">
+              <h3>Docker & Portainer</h3>
+              <p>
+                Docker containers allowed services to be deployed and managed
+                efficiently inside the lab environment.
+              </p>
+      
+              <ul>
+                <li>Containerized services</li>
+                <li>Portainer container management</li>
+                <li>Rapid service deployment</li>
+              </ul>
+            </div>
+      
           </div>
         </div>
       </section>
@@ -645,7 +743,7 @@
     <footer class="site-footer">
       <div class="container" style="display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;">
         <p>© 2026 Eva Kamau</p>
-        <p>Built with HTML, CSS, and GitHub Pages.</p>
+        <!-- <p>Built with HTML, CSS, and GitHub Pages.</p> -->
       </div>
     </footer>
   </div>
