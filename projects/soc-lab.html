@@ -329,41 +329,65 @@
       padding-left: 1.1rem;
     }
 
-   .tool-card-grid{
+  .tool-card-grid{
       display:grid;
-      grid-template-columns:repeat(3, 1fr);
-      gap:1.5rem;
+      grid-template-columns:repeat(3,1fr);
+      gap:1.6rem;
       margin-top:2rem;
     }
     
     .tool-card{
-      background:linear-gradient(180deg, rgba(19, 31, 54, 0.96), rgba(13, 24, 43, 0.98));
+      background:linear-gradient(
+          180deg,
+          rgba(19,31,54,0.96),
+          rgba(13,24,43,0.98)
+      );
       border:1px solid var(--border);
       border-radius:18px;
       padding:1.6rem;
-      transition:transform 0.25s ease, border-color 0.25s ease;
+      transition:transform .25s ease,
+                 border-color .25s ease,
+                 box-shadow .25s ease;
     }
     
     .tool-card:hover{
       transform:translateY(-6px);
       border-color:var(--accent);
+      box-shadow:0 14px 35px rgba(0,0,0,.35);
+    }
+    
+    .tool-header{
+      display:flex;
+      align-items:center;
+      gap:.6rem;
+      margin-bottom:.3rem;
     }
     
     .tool-icon{
-      font-size:1.7rem;
-      margin-bottom:0.6rem;
+      font-size:1.4rem;
     }
     
     .tool-card h3{
-      margin:0 0 0.5rem;
+      margin:0;
+      font-size:1.1rem;
     }
     
-    .tool-card p{
-      font-size:0.95rem;
+    .tool-role{
+      margin:.3rem 0 .7rem;
       color:var(--muted);
-      line-height:1.5;
+      font-size:.95rem;
     }
     
+    .tool-features{
+      margin:0;
+      padding-left:1.2rem;
+      color:var(--muted);
+      font-size:.92rem;
+    }
+    
+    .tool-features li + li{
+      margin-top:.35rem;
+    }
 
     .screenshot-placeholder {
       min-height: 240px;
@@ -582,73 +606,111 @@
         </div>
       </section>
 
-      <section class="section">
-        <div class="container">
-          <div class="section-heading">
-            <p class="section-label">Technologies</p>
-            <h2>Tools Used in the Lab</h2>
+      <div class="tool-card-grid">
+
+        <div class="tool-card">
+          <div class="tool-header">
+            <span class="tool-icon">🛡️</span>
+            <h3>pfSense Firewall</h3>
           </div>
       
-          <div class="tool-card-grid">
+          <p class="tool-role">
+            Network perimeter security and segmentation.
+          </p>
       
-            <div class="tool-card">
-              <div class="tool-icon">🛡️</div>
-              <h3>pfSense</h3>
-              <p>
-                Used as the firewall and gateway for the SOC lab. Configured
-                firewall rules, NAT, and network segmentation to simulate
-                enterprise security controls.
-              </p>
-            </div>
-      
-            <div class="tool-card">
-              <div class="tool-icon">📊</div>
-              <h3>Splunk</h3>
-              <p>
-                Central log collection and analysis platform used to monitor
-                system events and analyze activity across the lab environment.
-              </p>
-            </div>
-      
-            <div class="tool-card">
-              <div class="tool-icon">🔎</div>
-              <h3>OpenVAS</h3>
-              <p>
-                Vulnerability scanning platform used to identify potential
-                weaknesses and exposures within the lab systems.
-              </p>
-            </div>
-      
-            <div class="tool-card">
-              <div class="tool-icon">🐧</div>
-              <h3>Ubuntu</h3>
-              <p>
-                Linux-based systems used to host services, security tools,
-                and administration components inside the lab environment.
-              </p>
-            </div>
-      
-            <div class="tool-card">
-              <div class="tool-icon">🪟</div>
-              <h3>Windows Server</h3>
-              <p>
-                Used to simulate enterprise infrastructure and generate logs
-                for monitoring and security analysis.
-              </p>
-            </div>
-      
-            <div class="tool-card">
-              <div class="tool-icon">🐳</div>
-              <h3>Docker & Portainer</h3>
-              <p>
-                Container platform used to deploy and manage services quickly
-                inside the lab environment with simplified administration.
-              </p>
-            </div>
-      
-          </div>
+          <ul class="tool-features">
+            <li>Firewall rule configuration</li>
+            <li>VLAN segmentation</li>
+            <li>Traffic control and monitoring</li>
+          </ul>
         </div>
-      </section>
+      
+        <div class="tool-card">
+          <div class="tool-header">
+            <span class="tool-icon">📊</span>
+            <h3>Splunk Monitoring</h3>
+          </div>
+      
+          <p class="tool-role">
+            Centralized logging and security monitoring platform.
+          </p>
+      
+          <ul class="tool-features">
+            <li>Log ingestion</li>
+            <li>Search and dashboards</li>
+            <li>Security event investigation</li>
+          </ul>
+        </div>
+      
+        <div class="tool-card">
+          <div class="tool-header">
+            <span class="tool-icon">🔎</span>
+            <h3>OpenVAS Scanner</h3>
+          </div>
+      
+          <p class="tool-role">
+            Vulnerability assessment across internal lab systems.
+          </p>
+      
+          <ul class="tool-features">
+            <li>Network vulnerability scanning</li>
+            <li>Host risk detection</li>
+            <li>Security reporting</li>
+          </ul>
+        </div>
+      
+        <div class="tool-card">
+          <div class="tool-header">
+            <span class="tool-icon">🐧</span>
+            <h3>Ubuntu Servers</h3>
+          </div>
+      
+          <p class="tool-role">
+            Linux infrastructure hosting services and tools.
+          </p>
+      
+          <ul class="tool-features">
+            <li>Service hosting</li>
+            <li>System administration</li>
+            <li>Linux infrastructure management</li>
+          </ul>
+        </div>
+      
+        <div class="tool-card">
+          <div class="tool-header">
+            <span class="tool-icon">🪟</span>
+            <h3>Windows Server</h3>
+          </div>
+      
+          <p class="tool-role">
+            Simulated enterprise systems for monitoring and testing.
+          </p>
+      
+          <ul class="tool-features">
+            <li>Enterprise infrastructure simulation</li>
+            <li>Windows administration</li>
+            <li>Log generation for monitoring</li>
+          </ul>
+        </div>
+      
+        <div class="tool-card">
+          <div class="tool-header">
+            <span class="tool-icon">🐳</span>
+            <h3>Docker & Portainer</h3>
+          </div>
+      
+          <p class="tool-role">
+            Containerized service deployment and management.
+          </p>
+      
+          <ul class="tool-features">
+            <li>Container orchestration</li>
+            <li>Service deployment</li>
+            <li>Portainer management interface</li>
+          </ul>
+        </div>
+      
+      </div>
 
       <section class="section">
         <div class="container">
