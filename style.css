@@ -503,3 +503,43 @@ a {
     align-items: flex-start;
   }
 }
+
+/* Container to center the button below your grid */
+.view-all-container {
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 60px;
+}
+
+/* The View All Projects button styling */
+.btn-view-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background-color: transparent;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 12px 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    border: 2px solid #007acc; /* Matches your professional blue accent */
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+/* Arrow slide transition asset */
+.btn-view-all .arrow {
+    transition: transform 0.3s ease;
+}
+
+/* Hover Effect: Background fills up and the arrow nudges forward */
+.btn-view-all:hover {
+    background-color: #007acc;
+    color: #ffffff;
+    box-shadow: 0 0 15px rgba(0, 122, 204, 0.4); /* Subtle cyber glow */
+}
+
+.btn-view-all:hover .arrow {
+    transform: translateX(5px);
+}
