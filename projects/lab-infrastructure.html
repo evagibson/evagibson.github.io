@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>My home lab: eight VMs behind a pfSense firewall · Eva Kamau</title>
+<meta name="description" content="I planned, built and documented my own lab in VirtualBox: a pfSense router and firewall, three VLANs, and Linux, Windows and Docker servers, each set up for its role.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="../index.html">Eva Kamau</a>
+    <nav aria-label="Sections">
+      <ul>
+        <li><a href="../index.html#skills">Skills</a></li>
+        <li><a href="../index.html#projects">Projects</a></li>
+        <li><a href="../index.html#certifications">Certifications</a></li>
+        <li><a href="../index.html#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<main class="entry">
+  <div class="wrap">
+    <article class="col">
+      <p class="crumbs"><a href="../index.html#projects">Projects</a> · <span class="track ops-l">Project 01 · Infrastructure · Virtualisation</span></p>
+      <h1>My home lab: eight VMs behind a pfSense firewall</h1>
+      <p class="dek">I planned, built and documented my own lab in VirtualBox: a pfSense router and firewall, three VLANs, and Linux, Windows and Docker servers, each set up for its role.</p>
+      <dl class="facts">
+<div><dt>Role it supports</dt><dd>Cloud / Infrastructure Engineer, Sysadmin, DevOps</dd></div>
+<div><dt>Setting</dt><dd>Home lab</dd></div>
+<div><dt>Tools</dt><dd>VirtualBox, pfSense, VLANs, DHCP, Ubuntu, Debian, Kali, Windows Server 2022, Windows 10, Docker, Portainer</dd></div>
+      </dl>
+      <div class="prose">
+<h2 id="problem">The problem</h2>
+<p>I wanted my own lab to practise on: user machines, servers, a firewall between them, and an isolated zone for attack testing. A single computer can't give you that, so I built the whole environment from virtual machines and wrote down every step so I could rebuild it, or hand it to someone else.</p>
+
+<h2 id="built">What I built</h2>
+<p>Eight virtual machines in VirtualBox on one host, connected through a pfSense router and firewall that splits the network into three VLANs. Each machine has a clear role.</p>
+<div class="tbl"><table>
+  <tr><th>VM</th><th>Operating system</th><th>VLAN</th><th>Role</th></tr>
+  <tr><td>Firewall</td><td>pfSense CE</td><td>All</td><td>Router, firewall, DHCP and NAT for the lab</td></tr>
+  <tr><td>Docker host</td><td>Ubuntu Server 22.04</td><td>20 Servers</td><td>Runs containers, managed through Portainer</td></tr>
+  <tr><td>SIEM server</td><td>Ubuntu 22.04 with desktop</td><td>20 Servers</td><td>Hosts Splunk</td></tr>
+  <tr><td>Windows server</td><td>Windows Server 2022</td><td>10 Users</td><td>Windows server and log source</td></tr>
+  <tr><td>Workstation</td><td>Windows 10</td><td>10 Users</td><td>Desktop machine and log source</td></tr>
+  <tr><td>Attacker</td><td>Kali Linux</td><td>30 Attack lab</td><td>Testing and vulnerability scanning</td></tr>
+  <tr><td>Target</td><td>Metasploitable 2</td><td>30 Attack lab</td><td>Deliberately vulnerable machine</td></tr>
+  <tr><td>Linux server</td><td>Debian</td><td>20 Servers</td><td>General-purpose Linux server</td></tr>
+</table></div>
+<figure class="diagram">
+  <div class="dwrap">
+    <svg viewBox="0 0 720 360" role="img" aria-label="One host runs eight VMs: pfSense routes between the internet and VLAN 10 users, VLAN 20 servers and VLAN 30 attack lab">
+      <defs><marker id="ah5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" class="d-head"/></marker></defs>
+      <rect x="4" y="4" width="712" height="352" rx="12" class="d-zone"/>
+      <text x="18" y="26" class="d-s">Physical host · VirtualBox</text>
+      <rect x="280" y="20" width="160" height="44" rx="8" class="d-box"/><text x="296" y="40" class="d-t">Internet</text><text x="296" y="56" class="d-s">WAN adapter (NAT)</text>
+      <rect x="260" y="96" width="200" height="56" rx="8" class="d-hl"/><text x="276" y="120" class="d-t">pfSense</text><text x="276" y="140" class="d-s">VLAN 10 · 20 · 30 on LAN</text>
+      <path d="M360 66 L360 94" class="d-a" marker-end="url(#ah5)"/>
+      <rect x="18" y="186" width="216" height="158" rx="10" class="d-box"/><text x="32" y="208" class="d-s">VLAN 10 · 10.10.10.0/24</text>
+      <text x="32" y="236" class="d-t">Windows Server 2022</text><text x="32" y="262" class="d-t">Windows 10</text>
+      <rect x="252" y="186" width="216" height="158" rx="10" class="d-box"/><text x="266" y="208" class="d-s">VLAN 20 · 10.10.20.0/24</text>
+      <text x="266" y="236" class="d-t">Ubuntu · Docker + Portainer</text><text x="266" y="262" class="d-t">Ubuntu desktop · Splunk</text><text x="266" y="288" class="d-t">Debian</text>
+      <rect x="486" y="186" width="216" height="158" rx="10" class="d-box"/><text x="500" y="208" class="d-s">VLAN 30 · 10.10.30.0/24</text>
+      <text x="500" y="236" class="d-t">Kali Linux</text><text x="500" y="262" class="d-t">Metasploitable 2</text><text x="500" y="282" class="d-s">10.10.30.8</text>
+      <path d="M300 154 L126 184" class="d-a" marker-end="url(#ah5)"/>
+      <path d="M360 154 L360 184" class="d-a" marker-end="url(#ah5)"/>
+      <path d="M420 154 L594 184" class="d-a" marker-end="url(#ah5)"/>
+    </svg>
+  </div>
+  <figcaption>Figure 1. Eight VMs on one host. pfSense is the only path between the internet and the three VLANs.</figcaption>
+</figure>
+
+<h2 id="how">How I did it</h2>
+<ol class="steps">
+  <li>
+    <h3>Installed pfSense as the router and firewall</h3>
+    <p>I built the pfSense VM first, because every other machine depends on it for addresses and internet access. It has two virtual network adapters: one on VirtualBox's NAT network as the WAN, and one on an internal network as the LAN. I booted the installer and accepted the defaults.</p>
+    <figure class="shot"><div class="frame">Screenshot to add: pfSense installation screen</div><figcaption>Figure 2. pfSense installer.</figcaption></figure>
+  </li>
+  <li>
+    <h3>Configured the interfaces</h3>
+    <p>From the pfSense console, I assigned the WAN and LAN interfaces and set the LAN address. Then I finished the setup wizard in the web interface: hostname, DNS servers, time zone, and a new admin password in place of the default.</p>
+    <figure class="shot"><div class="frame">Screenshot to add: console showing WAN and LAN with their addresses</div><figcaption>Figure 3. pfSense interface assignment at the console.</figcaption></figure>
+  </li>
+  <li>
+    <h3>Added Kali as the first client</h3>
+    <p>I installed Kali Linux next and used its browser to reach the pfSense web interface and finish the network configuration.</p>
+    <figure class="shot"><div class="frame">Screenshot to add: pfSense dashboard in Kali's browser</div><figcaption>Figure 4. pfSense dashboard opened from Kali.</figcaption></figure>
+  </li>
+  <li>
+    <h3>Split the network into three VLANs</h3>
+    <p>In <em>Interfaces → Assignments → VLANs</em>, I created VLAN tags 10, 20 and 30 on the LAN adapter, assigned each as its own interface, and gave each a gateway and a DHCP range. This is the same subnetting and routing work as planning subnets in a cloud VPC.</p>
+    <div class="tbl"><table>
+      <tr><th>VLAN</th><th>Purpose</th><th>Gateway</th><th>DHCP range</th></tr>
+      <tr><td>10</td><td>Users</td><td>10.10.10.1/24</td><td>10.10.10.100–200</td></tr>
+      <tr><td>20</td><td>Servers</td><td>10.10.20.1/24</td><td>10.10.20.100–200</td></tr>
+      <tr><td>30</td><td>Attack lab</td><td>10.10.30.1/24</td><td>10.10.30.5–50</td></tr>
+    </table></div>
+    <figure class="shot"><div class="frame">Screenshot to add: Interfaces → Assignments → VLANs</div><figcaption>Figure 5. The three VLANs in pfSense.</figcaption></figure>
+  </li>
+  <li>
+    <h3>Set baseline firewall rules on every VLAN</h3>
+    <p>New pfSense interfaces block all traffic, so I added the rules each zone needs in <em>Firewall → Rules</em>. To keep them consistent, I built them on VLAN 10 first, copied each rule, and pasted it into VLAN 20 and VLAN 30, changing the source. Each change was saved and applied before I moved on. The full rule set is in <a href="detection-lab.html">Project 04</a>.</p>
+    <figure class="shot"><div class="frame">Screenshot to add: Firewall → Rules for one VLAN</div><figcaption>Figure 6. Rules copied across VLANs.</figcaption></figure>
+  </li>
+  <li>
+    <h3>Built the Ubuntu Docker host</h3>
+    <p>On an Ubuntu Server VM in VLAN 20, I removed any old container packages and installed Docker Engine from Docker's official repository, which gets updates faster than Ubuntu's own package.</p>
+<div class="code"><div class="lbl"><span>Ubuntu, Docker host</span><button type="button" class="copy">Copy</button></div><pre><code>for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done
+
+<span class="c"># Add Docker's official GPG key and repository</span>
+sudo apt-get update
+sudo apt-get install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(. /etc/os-release &amp;&amp; echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list &gt; /dev/null
+sudo apt-get update
+
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+sudo docker run hello-world
+sudo docker ps</code></pre></div>
+  </li>
+  <li>
+    <h3>Added Portainer to manage containers</h3>
+    <p>I ran Portainer as a container with a persistent volume, so its settings survive restarts, and set it to restart automatically.</p>
+<div class="code"><div class="lbl"><span>Ubuntu, Docker host</span><button type="button" class="copy">Copy</button></div><pre><code>sudo docker volume create portainer_data
+sudo docker run -d -p 8000:8000 -p 9443:9443 --name portainer --restart=always \
+  -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data \
+  portainer/portainer-ce:latest
+sudo docker ps</code></pre></div>
+    <p>At <code>https://&lt;docker-host-ip&gt;:9443</code> I created the admin account, went to <em>Home</em>, and connected to the local Docker environment. Portainer locks its first-run page after a few minutes for safety, and <code>sudo docker restart portainer</code> reopens it.</p>
+    <figure class="shot"><div class="frame">Screenshot to add: Portainer home page</div><figcaption>Figure 7. Portainer connected to the local Docker environment.</figcaption></figure>
+  </li>
+  <li>
+    <h3>Built the Metasploitable 2 target</h3>
+    <p>Metasploitable 2 comes as a ready-made virtual disk. I created a VM around it on VLAN 30 at 10.10.30.8 and signed in with its default <code>msfadmin</code> account. Keeping it on its own VLAN means it can't reach anything that matters.</p>
+    <figure class="shot"><div class="frame">Screenshot to add: Metasploitable 2 login banner</div><figcaption>Figure 8. Metasploitable 2 after sign-in.</figcaption></figure>
+  </li>
+  <li>
+    <h3>Installed Windows Server 2022 and Windows 10</h3>
+    <p>I installed Windows Server 2022 and Windows 10 on VLAN 10 to give the lab a Windows server and a Windows desktop. The server restarts itself once installation finishes.</p>
+    <figure class="shot"><div class="frame">Screenshot to add: Server Manager dashboard</div><figcaption>Figure 9. Windows Server 2022 after installation.</figcaption></figure>
+  </li>
+  <li>
+    <h3>Built the Splunk server with a desktop</h3>
+    <p>For the SIEM server, I started from Ubuntu and added a desktop environment so I could use Splunk's web interface directly on the machine.</p>
+<div class="code"><div class="lbl"><span>Ubuntu, SIEM server</span><button type="button" class="copy">Copy</button></div><pre><code>sudo apt install tasksel
+sudo tasksel install ubuntu-desktop
+sudo reboot</code></pre></div>
+    <p>Installing and configuring Splunk itself is covered in <a href="detection-lab.html">Project 04</a>.</p>
+  </li>
+  <li>
+    <h3>Added a Debian server</h3>
+    <p>Finally, I built a Debian VM in VLAN 20, so the lab has a second Linux distribution alongside Ubuntu.</p>
+  </li>
+  <li>
+    <h3>Tested that every machine could reach what it needs</h3>
+    <p>Last, I checked each VM got an address from the right VLAN and could reach its gateway and the internet. Then I checked that the zones were separated where they should be, for example that Metasploitable 2 couldn't reach VLAN 10.</p>
+<div class="code"><div class="lbl"><span>Any Linux VM</span><button type="button" class="copy">Copy</button></div><pre><code>ip -4 addr show          <span class="c"># address from the expected VLAN range</span>
+ping -c 3 10.10.20.1     <span class="c"># own gateway</span>
+ping -c 3 8.8.8.8        <span class="c"># internet through pfSense NAT</span></code></pre></div>
+  </li>
+</ol>
+
+<h2 id="found">What I found</h2>
+<ul>
+  <li>Building in dependency order paid off: router first, then network design, then rules, then servers. Each new VM came up with an address and internet access straight away.</li>
+  <li>Copying firewall rules between VLANs and then editing them was faster and less error-prone than writing each set from scratch.</li>
+  <li>Writing the build down as I went turned into this guide, which is the same habit infrastructure teams need for documenting processes and configurations.</li>
+</ul>
+<div class="tbl"><table>
+  <tr><th>If you see</th><th>Cause and fix</th></tr>
+  <tr><td>A VM gets no IP address</td><td>Its VirtualBox adapter isn't attached to the lab's internal network, or DHCP isn't enabled on that VLAN's interface.</td></tr>
+  <tr><td>VMs get addresses but no internet</td><td>The VLAN's firewall rules don't allow outbound traffic yet, or pfSense's WAN adapter isn't set to NAT in VirtualBox.</td></tr>
+  <tr><td>Portainer's setup page times out</td><td>Run <code>sudo docker restart portainer</code> and finish setup within a few minutes.</td></tr>
+</table></div>
+
+<h2 id="next">What I'd do next</h2>
+<ul>
+    <li>Define the Linux VMs with Terraform and configure them with Ansible, so the whole lab can be rebuilt with one command.</li>
+  <li>Add Zabbix to monitor uptime, CPU and disk on every VM.</li>
+  <li>Recreate the three-VLAN design in a cloud VPC with public and private subnets.</li>
+</ul>
+
+      </div>
+      <nav class="pager" aria-label="More projects"><a href="../index.html#projects"><span>←</span>All projects</a><a href="wazuh-siem.html" style="text-align:right"><span>Project 02 →</span>Monitoring Windows and macOS endpoints with Wazuh</a></nav>
+    </article>
+  </div>
+</main>
+<footer>
+  <div class="wrap">© 2026 Eva Kamau</div>
+</footer>
+<script src="../script.js"></script>
+</body>
+</html>

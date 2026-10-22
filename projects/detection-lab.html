@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Detecting attacks and finding vulnerabilities with Splunk and OpenVAS · Eva Kamau</title>
+<meta name="description" content="In my home lab, I contained a vulnerable machine with firewall rules, sent Windows logs to Splunk to hunt for attacks, and scanned the target with OpenVAS.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="../index.html">Eva Kamau</a>
+    <nav aria-label="Sections">
+      <ul>
+        <li><a href="../index.html#skills">Skills</a></li>
+        <li><a href="../index.html#projects">Projects</a></li>
+        <li><a href="../index.html#certifications">Certifications</a></li>
+        <li><a href="../index.html#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<main class="entry">
+  <div class="wrap">
+    <article class="col">
+      <p class="crumbs"><a href="../index.html#projects">Projects</a> · <span class="track sec-l">Project 04 · Cybersecurity · Detection</span></p>
+      <h1>Detecting attacks and finding vulnerabilities with Splunk and OpenVAS</h1>
+      <p class="dek">In my home lab, I contained a vulnerable machine with firewall rules, sent Windows logs to Splunk to hunt for attacks, and scanned the target with OpenVAS.</p>
+      <dl class="facts">
+<div><dt>Role it supports</dt><dd>SOC Analyst, Security / DevSecOps</dd></div>
+<div><dt>Setting</dt><dd>Home lab</dd></div>
+<div><dt>Tools</dt><dd>pfSense, Splunk, Universal Forwarder, Kali, OpenVAS, Metasploitable 2</dd></div>
+      </dl>
+      <div class="prose">
+<h2 id="problem">The problem</h2>
+<p>A network is only secure if someone can see what happens on it and knows where its weak spots are. Using the home lab I built in <a href="lab-infrastructure.html">Project 01</a>, I set out to do the SOC side: contain risky machines with firewall rules, collect Windows logs centrally so attacks show up, and scan for vulnerabilities before an attacker finds them.</p>
+
+<h2 id="built">What I built</h2>
+<p>Three security layers on top of the lab network. pfSense rules keep the vulnerable Metasploitable 2 machine contained. The Windows machines forward their event logs to Splunk, where I hunt for attacks. OpenVAS on Kali scans the target for known vulnerabilities.</p>
+<figure class="diagram">
+  <div class="dwrap">
+    <svg viewBox="0 0 720 360" role="img" aria-label="pfSense routes between the internet and three VLANs: VLAN 10 users with Windows Server 2022 and Windows 10, VLAN 20 servers with Splunk and Docker with Portainer, VLAN 30 lab with Kali running OpenVAS and Metasploitable 2">
+      <defs><marker id="ah3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" class="d-head"/></marker></defs>
+      <rect x="280" y="14" width="160" height="50" rx="8" class="d-box"/><text x="296" y="38" class="d-t">Internet</text><text x="296" y="54" class="d-s">WAN</text>
+      <rect x="260" y="104" width="200" height="60" rx="8" class="d-hl"/><text x="276" y="130" class="d-t">pfSense firewall</text><text x="276" y="150" class="d-s">routing + rules + NAT</text>
+      <path d="M360 66 L360 102" class="d-a" marker-end="url(#ah3)"/>
+      <rect x="10" y="200" width="220" height="150" rx="10" class="d-zone"/><text x="24" y="222" class="d-s">VLAN 10 · Users</text>
+      <rect x="24" y="234" width="192" height="50" rx="8" class="d-box"/><text x="38" y="256" class="d-t">Windows Server 2022</text><text x="38" y="274" class="d-s">Splunk forwarder</text>
+      <rect x="24" y="290" width="192" height="50" rx="8" class="d-box"/><text x="38" y="312" class="d-t">Windows 10</text><text x="38" y="330" class="d-s">Splunk forwarder</text>
+      <rect x="250" y="200" width="220" height="150" rx="10" class="d-zone"/><text x="264" y="222" class="d-s">VLAN 20 · Servers</text>
+      <rect x="264" y="234" width="192" height="50" rx="8" class="d-box"/><text x="278" y="256" class="d-t">Ubuntu · Splunk</text><text x="278" y="274" class="d-s">receives on 9997</text>
+      <rect x="264" y="290" width="192" height="50" rx="8" class="d-box"/><text x="278" y="312" class="d-t">Ubuntu · Docker</text><text x="278" y="330" class="d-s">Portainer on 9443</text>
+      <rect x="490" y="200" width="220" height="150" rx="10" class="d-zone"/><text x="504" y="222" class="d-s">VLAN 30 · Attack lab</text>
+      <rect x="504" y="234" width="192" height="50" rx="8" class="d-box"/><text x="518" y="256" class="d-t">Kali Linux</text><text x="518" y="274" class="d-s">OpenVAS scanner</text>
+      <rect x="504" y="290" width="192" height="50" rx="8" class="d-box"/><text x="518" y="312" class="d-t">Metasploitable 2</text><text x="518" y="330" class="d-s">target · 10.10.30.8</text>
+      <path d="M300 166 L120 198" class="d-a" marker-end="url(#ah3)"/>
+      <path d="M360 166 L360 198" class="d-a" marker-end="url(#ah3)"/>
+      <path d="M420 166 L600 198" class="d-a" marker-end="url(#ah3)"/>
+    </svg>
+  </div>
+  <figcaption>Figure 1. Three VLANs behind one firewall. The attack lab is kept apart, so the vulnerable machine can't reach users or servers.</figcaption>
+</figure>
+
+<p><strong>What it runs on:</strong> the eight-VM lab from <a href="lab-infrastructure.html">Project 01</a>, plus Splunk Enterprise (trial), the Splunk Universal Forwarder, and Greenbone OpenVAS on Kali.</p>
+<div class="note warn"><b>Safety</b>Metasploitable 2 is vulnerable on purpose. I kept it on the attack-lab VLAN, never bridged it to my home network, and never exposed it to the internet.</div>
+
+<h2 id="how">How I did it</h2>
+<ol class="steps">
+  <li>
+    <h3>Locked down traffic between VLANs</h3>
+    <p>pfSense blocks traffic on new interfaces by default, and I kept it that way, adding only the connections each zone needs. I built the rules on VLAN 10 first, then copied each one to VLAN 20 and VLAN 30 and changed the source, which kept the three rule sets consistent.</p>
+    <div class="tbl"><table>
+      <tr><th>Interface</th><th>Rule</th><th>Why</th></tr>
+      <tr><td>All VLANs</td><td>Allow DNS to the VLAN's own gateway</td><td>Name resolution</td></tr>
+      <tr><td>VLAN 10</td><td>Allow to Splunk TCP 9997 and 8000</td><td>Send logs, open the Splunk web page</td></tr>
+      <tr><td>VLAN 30</td><td>Allow Kali to Metasploitable 2</td><td>Scanning and testing the target</td></tr>
+      <tr><td>VLAN 30</td><td>Block Metasploitable 2 to any other VLAN</td><td>The vulnerable host stays contained</td></tr>
+      <tr><td>All VLANs</td><td>Block to other private networks, then allow internet</td><td>Updates without lateral movement</td></tr>
+    </table></div>
+    <p>To prove the segmentation worked, I checked that Metasploitable 2 could not ping <code>10.10.10.1</code>, while Kali could still reach <code>10.10.30.8</code>.</p>
+    <figure class="shot"><div class="frame">Screenshot to add: Firewall → Rules → VLAN30</div><figcaption>Figure 2. Firewall rules on VLAN 30.</figcaption></figure>
+  </li>
+  <li>
+    <h3>Set up Splunk to receive logs</h3>
+    <p>On the Ubuntu desktop VM in VLAN 20, built in <a href="lab-infrastructure.html">Project 01</a>, I installed Splunk Enterprise from its <code>.deb</code> package and set it to start on boot.</p>
+<div class="code"><div class="lbl"><span>Ubuntu, Splunk server</span><button type="button" class="copy">Copy</button></div><pre><code>sudo dpkg -i splunk-*-linux-amd64.deb
+sudo /opt/splunk/bin/splunk start --accept-license
+sudo /opt/splunk/bin/splunk enable boot-start</code></pre></div>
+    <p>In <em>Settings → Forwarding and receiving</em>, I added receiving port <code>9997</code>. In <em>Settings → Indexes</em>, I created an index called <code>wineventlog</code> so Windows events are kept apart and are quicker to search.</p>
+    <figure class="shot"><div class="frame">Screenshot to add: Settings → Forwarding and receiving</div><figcaption>Figure 3. Splunk listening for forwarded logs on port 9997.</figcaption></figure>
+  </li>
+  <li>
+    <h3>Forwarded the Windows logs</h3>
+    <p>On Windows 10 and Windows Server, I installed the Splunk Universal Forwarder and pointed it at the Splunk server on port 9997. The installer sends logs to the default index, so I added this file to route Security and System events to <code>wineventlog</code>, then restarted the forwarder.</p>
+<div class="code"><div class="lbl"><span>C:\Program Files\SplunkUniversalForwarder\etc\system\local\inputs.conf</span><button type="button" class="copy">Copy</button></div><pre><code>[WinEventLog://Security]
+index = wineventlog
+disabled = 0
+
+[WinEventLog://System]
+index = wineventlog
+disabled = 0</code></pre></div>
+<div class="code"><div class="lbl"><span>Windows, PowerShell as administrator</span><button type="button" class="copy">Copy</button></div><pre><code>Restart-Service SplunkForwarder</code></pre></div>
+  </li>
+  <li>
+    <h3>Hunted for failed logons</h3>
+    <p>To prove logs were flowing, I typed a wrong password several times on Windows 10, then searched for event 4625 in Splunk:</p>
+<div class="code"><div class="lbl"><span>Splunk search</span><button type="button" class="copy">Copy</button></div><pre><code>index=wineventlog EventCode=4625
+| stats count by host, Account_Name
+| sort - count</code></pre></div>
+    
+    <figure class="shot"><div class="frame">Screenshot to add: Splunk results for EventCode 4625</div><figcaption>Figure 4. Failed logons grouped by host and account.</figcaption></figure>
+  </li>
+  <li>
+    <h3>Scanned Metasploitable 2 with OpenVAS</h3>
+    <p>On Kali, I installed Greenbone (OpenVAS). Setup prints a password for the <code>admin</code> user, which I stored safely and kept out of every screenshot.</p>
+<div class="code"><div class="lbl"><span>Kali</span><button type="button" class="copy">Copy</button></div><pre><code>sudo apt update &amp;&amp; sudo apt install -y gvm
+sudo gvm-setup
+sudo gvm-check-setup
+sudo gvm-start</code></pre></div>
+    <p>In the web interface at <code>https://127.0.0.1:9392</code>, I added <code>10.10.30.8</code> under <em>Configuration → Targets</em>, then created and ran a <em>Full and fast</em> scan task for it under <em>Scans → Tasks</em>.</p>
+    <figure class="shot"><div class="frame">Screenshot to add: Scans → Results for 10.10.30.8</div><figcaption>Figure 5. OpenVAS results for Metasploitable 2, sorted by severity.</figcaption></figure>
+    
+  </li>
+</ol>
+
+<h2 id="found">What I found</h2>
+<ul>
+  <li>The firewall held. Metasploitable 2 couldn't reach the user or server VLANs, so even a fully compromised machine stays contained.</li>
+  <li>Failed logons on Windows 10 showed up in Splunk with the host and account, proving the full log path from endpoint to SIEM.</li>
+  <li>OpenVAS flagged many high-severity issues on Metasploitable 2, as expected for a machine built to be vulnerable. For the most severe ones I recorded the service, the CVE, and the recommended fix, because a scan report is only useful once each finding has an explanation and a fix behind it.</li>
+  <li>Starting from "deny everything" and adding rules one at a time made every allowed connection a decision I could explain.</li>
+</ul>
+<div class="tbl"><table>
+  <tr><th>If you see</th><th>Cause and fix</th></tr>
+  <tr><td>No events in Splunk</td><td>The firewall rule for 9997 is missing, or receiving isn't enabled. Check <code>splunkd.log</code> on the forwarder.</td></tr>
+  <tr><td>OpenVAS shows no results</td><td>The feeds are still syncing after setup. Run <code>sudo gvm-check-setup</code> and wait for it to pass.</td></tr>
+</table></div>
+
+<h2 id="next">What I'd do next</h2>
+<ul>
+  <li>Attack Metasploitable 2 from Kali and check which steps Splunk and pfSense logs reveal, then write detections for the gaps.</li>
+  <li>Send pfSense firewall logs to Splunk, so blocked traffic between VLANs raises an alert.</li>
+  <li>Turn the worst OpenVAS findings into a report a developer or system owner can act on, then rescan after their fixes to confirm each issue is closed.</li>
+</ul>
+
+      </div>
+      <nav class="pager" aria-label="More projects"><a href="honeypot-threat-intel.html"><span>← Project 03</span>Turning honeypot attacks into STIX threat intelligence</a><a href="playwright-qa.html" style="text-align:right"><span>Project 05 →</span>Testing a point-of-sale app with Playwright</a></nav>
+    </article>
+  </div>
+</main>
+<footer>
+  <div class="wrap">© 2026 Eva Kamau</div>
+</footer>
+<script src="../script.js"></script>
+</body>
+</html>

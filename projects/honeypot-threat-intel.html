@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Turning honeypot attacks into STIX threat intelligence · Eva Kamau</title>
+<meta name="description" content="My MSc thesis pipeline: real SSH attacks captured by Cowrie, grouped into sessions, mapped to MITRE ATT&amp;CK, and published as a validated STIX 2.1 bundle.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="../index.html">Eva Kamau</a>
+    <nav aria-label="Sections">
+      <ul>
+        <li><a href="../index.html#skills">Skills</a></li>
+        <li><a href="../index.html#projects">Projects</a></li>
+        <li><a href="../index.html#certifications">Certifications</a></li>
+        <li><a href="../index.html#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<main class="entry">
+  <div class="wrap">
+    <article class="col">
+      <p class="crumbs"><a href="../index.html#projects">Projects</a> · <span class="track sec-l">Project 03 · Threat intelligence · MSc thesis</span></p>
+      <h1>Turning honeypot attacks into STIX threat intelligence</h1>
+      <p class="dek">My MSc thesis pipeline: real SSH attacks captured by Cowrie, grouped into sessions, mapped to MITRE ATT&amp;CK, and published as a validated STIX 2.1 bundle.</p>
+      <dl class="facts">
+<div><dt>Role it supports</dt><dd>Threat Intel / SOC Analyst, Python Developer</dd></div>
+<div><dt>Setting</dt><dd>MSc thesis, live cloud honeypot</dd></div>
+<div><dt>Tools</dt><dd>T-Pot, Cowrie, Python, stix2, jq</dd></div>
+      </dl>
+      <div class="prose">
+<h2 id="problem">The problem</h2>
+<p>Honeypots attract a steady stream of real attacks, but the raw logs are just lines of JSON that nobody outside the lab can use. For my MSc thesis I set out to turn those logs into threat intelligence another team could load and act on: which IP addresses attacked, what they tried, and which MITRE ATT&amp;CK techniques that matches.</p>
+
+<h2 id="built">What I built</h2>
+<p>A pipeline in five stages. A T-Pot honeypot on a cloud VM captured real SSH and Telnet attacks with Cowrie. A Python script grouped the events into attacker sessions, mapped them to ATT&amp;CK, and wrote a STIX 2.1 bundle, which I then validated.</p>
+<figure class="diagram">
+  <div class="dwrap">
+    <svg viewBox="0 0 760 200" role="img" aria-label="Pipeline: attackers hit T-Pot Cowrie honeypot, events go to cowrie.json, a Python parser groups sessions, maps them to ATT&amp;CK, writes a STIX bundle, then the STIX validator checks it">
+      <defs><marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" class="d-head"/></marker></defs>
+      <rect x="10" y="64" width="120" height="70" rx="8" class="d-box"/><text x="24" y="94" class="d-t">Internet</text><text x="24" y="114" class="d-s">SSH/Telnet bots</text>
+      <rect x="160" y="64" width="130" height="70" rx="8" class="d-box"/><text x="174" y="94" class="d-t">T-Pot · Cowrie</text><text x="174" y="114" class="d-s">fake SSH server</text>
+      <rect x="320" y="64" width="130" height="70" rx="8" class="d-hl"/><text x="334" y="94" class="d-t">Python parser</text><text x="334" y="114" class="d-s">sessions + ATT&amp;CK</text>
+      <rect x="480" y="64" width="120" height="70" rx="8" class="d-box"/><text x="494" y="94" class="d-t">STIX 2.1</text><text x="494" y="114" class="d-s">bundle.json</text>
+      <rect x="630" y="64" width="120" height="70" rx="8" class="d-box"/><text x="644" y="94" class="d-t">Validator</text><text x="644" y="114" class="d-s">stix2-validator</text>
+      <path d="M130 99 L158 99" class="d-a" marker-end="url(#ah2)"/>
+      <path d="M290 99 L318 99" class="d-a" marker-end="url(#ah2)"/>
+      <path d="M450 99 L478 99" class="d-a" marker-end="url(#ah2)"/>
+      <path d="M600 99 L628 99" class="d-a" marker-end="url(#ah2)"/>
+      <text x="166" y="160" class="d-s">cowrie.json</text>
+    </svg>
+  </div>
+  <figcaption>Figure 1. From attack to shareable intelligence in five stages.</figcaption>
+</figure>
+
+<p><strong>What it runs on:</strong> a separate cloud VM (Debian 12, 8 GB RAM, public IP) with nothing else on it, left running for several days to collect events, plus Python 3.10 or later on my own machine for the analysis.</p>
+<div class="note warn"><b>Safety</b>I kept the honeypot on its own cloud VM, away from any network with real data, and limited the provider firewall to what T-Pot needs. Anyone repeating this should do the same and delete the VM afterwards.</div>
+
+<h2 id="how">How I did it</h2>
+<ol class="steps">
+  <li>
+    <h3>Deployed T-Pot</h3>
+    <p>I chose T-Pot because it bundles Cowrie and other honeypots in Docker with a ready-made dashboard. I ran the installer as a normal user with sudo rights, as the project requires, and picked the <em>Hive</em> install.</p>
+<div class="code"><div class="lbl"><span>Honeypot VM</span><button type="button" class="copy">Copy</button></div><pre><code>git clone https://github.com/telekom-security/tpotce
+cd tpotce
+./install.sh
+sudo reboot</code></pre></div>
+    <p>After the reboot, my own SSH moved to port <code>64295</code>, leaving port 22 to the honeypot, and the T-Pot web interface came up on <code>https://&lt;vm-ip&gt;:64297</code>.</p>
+    <figure class="shot"><div class="frame">Screenshot to add: T-Pot dashboard or attack map</div><figcaption>Figure 2. T-Pot's attack map after the first day.</figcaption></figure>
+  </li>
+  <li>
+    <h3>Collected the Cowrie log</h3>
+    <p>Cowrie writes one JSON event per line. I copied the file off the VM so the analysis never ran on an exposed machine.</p>
+<div class="code"><div class="lbl"><span>Your machine</span><button type="button" class="copy">Copy</button></div><pre><code>scp -P 64295 user@&lt;vm-ip&gt;:~/tpotce/data/cowrie/log/cowrie.json .
+head -n 3 cowrie.json</code></pre></div>
+    <p>The events I used were <code>cowrie.login.failed</code>, <code>cowrie.login.success</code>, <code>cowrie.command.input</code> and <code>cowrie.session.file_download</code>. Every event carries a <code>session</code> ID, which is how I grouped them.</p>
+  </li>
+  <li>
+    <h3>Set up an isolated Python environment</h3>
+    <p>I pinned the validator to 3.2.0, because version 3.3.1 is published without its schema files and fails on every bundle.</p>
+<div class="code"><div class="lbl"><span>Your machine</span><button type="button" class="copy">Copy</button></div><pre><code>python3 -m venv .venv
+source .venv/bin/activate
+pip install stix2 "stix2-validator==3.2.0"   <span class="c"># 3.3.1 ships without its schemas</span></code></pre></div>
+  </li>
+  <li>
+    <h3>Grouped events into sessions and mapped them to ATT&amp;CK</h3>
+    <p>The script reads every event, groups them by session, and writes one STIX Observed Data object per session. I kept the mapping to two simple rules that anyone can check. Repeated failed logins in one session mean <strong>T1110 Brute Force</strong>. A download, or a <code>wget</code>, <code>curl</code> or <code>tftp</code> command, means <strong>T1105 Ingress Tool Transfer</strong>.</p>
+<div class="code"><div class="lbl"><span>build_bundle.py</span><button type="button" class="copy">Copy</button></div><pre><code>import json
+from collections import defaultdict
+from stix2 import (AttackPattern, Bundle, ExternalReference, Indicator,
+                   IPv4Address, ObservedData, Relationship)
+
+FAILED_LOGIN_THRESHOLD = 5   <span class="c"># tune this to your data</span>
+
+def technique(name, tid):
+    return AttackPattern(name=name, external_references=[ExternalReference(
+        source_name="mitre-attack", external_id=tid,
+        url=f"https://attack.mitre.org/techniques/{tid}/")])
+
+brute_force = technique("Brute Force", "T1110")
+tool_transfer = technique("Ingress Tool Transfer", "T1105")
+objects = [brute_force, tool_transfer]
+
+sessions = defaultdict(list)
+with open("cowrie.json") as f:
+    for line in f:
+        event = json.loads(line)
+        sessions[event["session"]].append(event)
+
+for events in sessions.values():
+    src = events[0]["src_ip"]
+    times = sorted(e["timestamp"] for e in events)
+    ip = IPv4Address(value=src)
+    observed = ObservedData(first_observed=times[0], last_observed=times[-1],
+                            number_observed=len(events), object_refs=[ip.id])
+    objects += [ip, observed]
+
+    failed = sum(e["eventid"] == "cowrie.login.failed" for e in events)
+    commands = " ".join(e.get("input", "") for e in events
+                        if e["eventid"] == "cowrie.command.input")
+    downloaded = any(e["eventid"] == "cowrie.session.file_download" for e in events)
+
+    for matched, attack in (
+        (failed &gt;= FAILED_LOGIN_THRESHOLD, brute_force),
+        (downloaded or any(t in commands for t in ("wget ", "curl ", "tftp ")), tool_transfer),
+    ):
+        if matched:
+            indicator = Indicator(name=f"{attack.name} from {src}",
+                                  description=f"Seen on the Cowrie honeypot in {len(events)} events",
+                                  pattern_type="stix",
+                                  pattern=f"[ipv4-addr:value = '{src}']",
+                                  valid_from=times[0])
+            objects += [indicator,
+                        Relationship(indicator, "indicates", attack),
+                        Relationship(indicator, "based-on", observed)]
+
+bundle = Bundle(objects=objects, allow_custom=False)
+with open("bundle.json", "w") as f:
+    f.write(bundle.serialize(pretty=True))
+print(f"{len(sessions)} sessions, {len(objects)} STIX objects")</code></pre></div>
+<div class="code"><div class="lbl"><span>Your machine</span><button type="button" class="copy">Copy</button></div><pre><code>python build_bundle.py</code></pre></div>
+  </li>
+  <li>
+    <h3>Validated the bundle</h3>
+    <p>Threat-intel platforms reject malformed STIX, so I validated the bundle before calling it done.</p>
+<div class="code"><div class="lbl"><span>Your machine</span><button type="button" class="copy">Copy</button></div><pre><code>stix2_validator bundle.json</code></pre></div>
+    <p>The validator reported <code>STIX JSON: Valid</code>, with only advisory warnings about reference hashes. I also followed indicators through their <code>indicates</code> relationships to confirm each one pointed at T1110 or T1105.</p>
+    <figure class="shot"><div class="frame">Screenshot to add: stix2_validator result</div><figcaption>Figure 3. Validator output for the final bundle.</figcaption></figure>
+  </li>
+  <li>
+    <h3>Read the results like an analyst</h3>
+    <p>Finally, I counted which source IPs appeared most and which commands attackers ran after logging in. Those two lists are what a SOC turns into block rules and detection ideas.</p>
+<div class="code"><div class="lbl"><span>Your machine</span><button type="button" class="copy">Copy</button></div><pre><code>jq -r 'select(.eventid=="cowrie.login.failed") | .src_ip' cowrie.json | sort | uniq -c | sort -rn | head
+jq -r 'select(.eventid=="cowrie.command.input") | .input' cowrie.json | sort | uniq -c | sort -rn | head</code></pre></div>
+    <figure class="shot"><div class="frame">Screenshot to add: terminal output of the two jq commands</div><figcaption>Figure 4. Top attacking IPs and most common commands.</figcaption></figure>
+  </li>
+</ol>
+
+<h2 id="found">What I found</h2>
+<div class="tbl"><table>
+  <tr><th>Stage</th><th>Count</th></tr>
+  <tr><td>Cowrie events processed</td><td>4,265</td></tr>
+  <tr><td>Attacker sessions, written as STIX Observed Data</td><td>770</td></tr>
+  <tr><td>STIX objects in the final, validated bundle</td><td>about 1,440</td></tr>
+  <tr><td>ATT&amp;CK techniques detected</td><td>T1110 Brute Force, T1105 Ingress Tool Transfer</td></tr>
+</table></div>
+<ul>
+  <li>Grouping by session turned thousands of events into a few hundred stories an analyst can actually read.</li>
+  <li>Brute-force logins and attempts to download tools onto the server were the two behaviours worth mapping, which is why the bundle covers T1110 and T1105.</li>
+  <li>Simple, explainable mapping rules are easier to defend than clever ones, and ATT&amp;CK IDs let anyone check them.</li>
+</ul>
+
+<h2 id="next">What I'd do next</h2>
+<ul>
+  <li>Enrich each attacking IP with its country and network owner, so the intelligence shows where attacks come from.</li>
+  <li>Map more techniques, such as discovery commands like <code>uname -a</code> to T1082 System Information Discovery.</li>
+  <li>Push the bundle to a sharing platform such as MISP or OpenCTI, so other teams receive it automatically.</li>
+</ul>
+
+      </div>
+      <nav class="pager" aria-label="More projects"><a href="wazuh-siem.html"><span>← Project 02</span>Monitoring Windows and macOS endpoints with Wazuh</a><a href="detection-lab.html" style="text-align:right"><span>Project 04 →</span>Detecting attacks and finding vulnerabilities with Splunk and OpenVAS</a></nav>
+    </article>
+  </div>
+</main>
+<footer>
+  <div class="wrap">© 2026 Eva Kamau</div>
+</footer>
+<script src="../script.js"></script>
+</body>
+</html>

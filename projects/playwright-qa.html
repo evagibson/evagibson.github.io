@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Testing a point-of-sale app with Playwright · Eva Kamau</title>
+<meta name="description" content="Test cases written from requirements, then automated UI and API checks for login, access control and input validation, running on every push.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="../index.html">Eva Kamau</a>
+    <nav aria-label="Sections">
+      <ul>
+        <li><a href="../index.html#skills">Skills</a></li>
+        <li><a href="../index.html#projects">Projects</a></li>
+        <li><a href="../index.html#certifications">Certifications</a></li>
+        <li><a href="../index.html#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<main class="entry">
+  <div class="wrap">
+    <article class="col">
+      <p class="crumbs"><a href="../index.html#projects">Projects</a> · <span class="track qa-l">Project 05 · QA · Security testing</span></p>
+      <h1>Testing a point-of-sale app with Playwright</h1>
+      <p class="dek">Test cases written from requirements, then automated UI and API checks for login, access control and input validation, running on every push.</p>
+      <dl class="facts">
+<div><dt>Role it supports</dt><dd>QA Engineer, Security Tester, Junior Developer</dd></div>
+<div><dt>Setting</dt><dd>My own app, in progress</dd></div>
+<div><dt>Tools</dt><dd>Playwright, JavaScript, Node.js, GitHub Actions</dd></div>
+      </dl>
+      <div class="prose">
+<h2 id="problem">The problem</h2>
+<p>I'm building a stock and point-of-sale web app with a REST API and a database. A till that miscounts stock, or lets a cashier into the admin pages, is a real business risk. Checking every flow by hand before each release is slow and easy to get wrong, so I needed tests that run on their own every time the code changes.</p>
+
+<h2 id="built">What I built</h2>
+<p>A test suite I approach the way I test production software at work: manual test cases first, then automated Playwright checks for the flows that must never break, with a security focus on login, access control and input validation. GitHub Actions runs the suite in three browsers on every push.</p>
+<figure class="diagram">
+  <div class="dwrap">
+    <svg viewBox="0 0 720 230" role="img" aria-label="A git push triggers GitHub Actions, which runs Playwright UI and API tests against the POS app and publishes an HTML report">
+      <defs><marker id="ah4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" class="d-head"/></marker></defs>
+      <rect x="10" y="80" width="120" height="64" rx="8" class="d-box"/><text x="24" y="108" class="d-t">git push</text><text x="24" y="126" class="d-s">any branch</text>
+      <rect x="160" y="80" width="150" height="64" rx="8" class="d-box"/><text x="174" y="108" class="d-t">GitHub Actions</text><text x="174" y="126" class="d-s">ubuntu-latest</text>
+      <rect x="340" y="20" width="160" height="64" rx="8" class="d-hl"/><text x="354" y="48" class="d-t">UI tests</text><text x="354" y="66" class="d-s">Chromium/Firefox/WebKit</text>
+      <rect x="340" y="140" width="160" height="64" rx="8" class="d-hl"/><text x="354" y="168" class="d-t">API tests</text><text x="354" y="186" class="d-s">request fixture</text>
+      <rect x="540" y="80" width="170" height="64" rx="8" class="d-box"/><text x="554" y="108" class="d-t">POS app</text><text x="554" y="126" class="d-s">web UI + REST API + DB</text>
+      <path d="M130 112 L158 112" class="d-a" marker-end="url(#ah4)"/>
+      <path d="M310 104 L338 60" class="d-a" marker-end="url(#ah4)"/>
+      <path d="M310 120 L338 166" class="d-a" marker-end="url(#ah4)"/>
+      <path d="M500 52 L560 80" class="d-a" marker-end="url(#ah4)"/>
+      <path d="M500 172 L560 144" class="d-a" marker-end="url(#ah4)"/>
+    </svg>
+  </div>
+  <figcaption>Figure 1. Every push runs the same tests in three browsers and against the API, so a regression is caught before release.</figcaption>
+</figure>
+
+<h3>The test cases behind it</h3>
+<p>I wrote these before any automation. Each one has an expected result, so a pass or a fail is never a matter of opinion.</p>
+<div class="tbl"><table>
+  <tr><th>ID</th><th>Scenario</th><th>Expected result</th><th>Type</th></tr>
+  <tr><td>AUTH-01</td><td>Cashier signs in with valid details</td><td>Lands on the till screen</td><td>Functional</td></tr>
+  <tr><td>AUTH-02</td><td>Sign in with a wrong password</td><td>Generic error that doesn't say which field was wrong</td><td>Security</td></tr>
+  <tr><td>AUTH-03</td><td>Cashier opens <code>/admin</code> directly</td><td>Access denied, no admin data shown</td><td>Access control</td></tr>
+  <tr><td>API-01</td><td>Call <code>GET /api/products</code> with no token</td><td><code>401 Unauthorized</code></td><td>Security</td></tr>
+  <tr><td>API-02</td><td>Record a sale with quantity <code>-1</code></td><td><code>400 Bad Request</code>, stock unchanged</td><td>Input validation</td></tr>
+  <tr><td>SALE-01</td><td>Sell 2 of an item with 10 in stock</td><td>Stock shows 8</td><td>Regression</td></tr>
+</table></div>
+
+<p><strong>What it runs on:</strong> Node.js 20 or later, the app running locally or on a test server, and two test accounts (a cashier and an admin). The routes, labels and messages in the code match my app. Anyone reusing it should change them to match theirs.</p>
+
+<h2 id="how">How I did it</h2>
+<ol class="steps">
+  <li>
+    <h3>Added Playwright to the project</h3>
+<div class="code"><div class="lbl"><span>Project folder</span><button type="button" class="copy">Copy</button></div><pre><code>npm init playwright@latest</code></pre></div>
+    <p>I chose JavaScript, a <code>tests</code> folder, and the GitHub Actions workflow. Then I set a base URL so tests use short paths, and turned on traces and failure screenshots so every failed test comes with evidence.</p>
+<div class="code"><div class="lbl"><span>playwright.config.js (excerpt)</span><button type="button" class="copy">Copy</button></div><pre><code>use: {
+  baseURL: process.env.BASE_URL || 'http://localhost:3000',
+  trace: 'on-first-retry',
+  screenshot: 'only-on-failure',
+},</code></pre></div>
+  </li>
+  <li>
+    <h3>Automated the login and access-control cases</h3>
+    <p>A shared sign-in helper keeps each test short. AUTH-02 checks that the error doesn't reveal whether the email or the password was wrong, which would help an attacker. AUTH-03 checks that the server refuses the admin page, not just that the menu hides it.</p>
+<div class="code"><div class="lbl"><span>tests/auth.spec.js</span><button type="button" class="copy">Copy</button></div><pre><code>const { test, expect } = require('@playwright/test');
+
+async function signIn(page, email, password) {
+  await page.goto('/login');
+  await page.getByLabel('Email').fill(email);
+  await page.getByLabel('Password').fill(password);
+  await page.getByRole('button', { name: 'Sign in' }).click();
+}
+
+test('AUTH-01 cashier can sign in', async ({ page }) =&gt; {
+  await signIn(page, process.env.CASHIER_EMAIL, process.env.CASHIER_PASSWORD);
+  await expect(page).toHaveURL(/\/pos/);
+});
+
+test('AUTH-02 wrong password shows a generic error', async ({ page }) =&gt; {
+  await signIn(page, process.env.CASHIER_EMAIL, 'not-the-password');
+  await expect(page.getByRole('alert')).toHaveText('Invalid email or password');
+});
+
+test('AUTH-03 cashier cannot open the admin page', async ({ page }) =&gt; {
+  await signIn(page, process.env.CASHIER_EMAIL, process.env.CASHIER_PASSWORD);
+  const response = await page.goto('/admin');
+  expect([401, 403]).toContain(response.status());
+  await expect(page.getByText('Manage users')).toHaveCount(0);
+});</code></pre></div>
+  </li>
+  <li>
+    <h3>Automated the API cases</h3>
+    <p>I used Playwright's <code>request</code> fixture to call the API directly. It's faster than going through the UI, and it tests the server's own checks, which an attacker can reach without the UI at all.</p>
+<div class="code"><div class="lbl"><span>tests/api.spec.js</span><button type="button" class="copy">Copy</button></div><pre><code>const { test, expect } = require('@playwright/test');
+
+test('API-01 products need a token', async ({ request }) =&gt; {
+  const res = await request.get('/api/products');
+  expect(res.status()).toBe(401);
+});
+
+test('API-02 negative quantity is rejected', async ({ request }) =&gt; {
+  const login = await request.post('/api/login', {
+    data: { email: process.env.CASHIER_EMAIL, password: process.env.CASHIER_PASSWORD },
+  });
+  const { token } = await login.json();
+  const res = await request.post('/api/sales', {
+    headers: { Authorization: `Bearer ${token}` },
+    data: { productId: 1, quantity: -1 },
+  });
+  expect(res.status()).toBe(400);
+});</code></pre></div>
+  </li>
+  <li>
+    <h3>Ran the suite and read the report</h3>
+    <p>Test accounts live in environment variables, never in the code.</p>
+<div class="code"><div class="lbl"><span>Project folder</span><button type="button" class="copy">Copy</button></div><pre><code>export CASHIER_EMAIL=cashier@test.local CASHIER_PASSWORD='...'
+npx playwright test
+npx playwright show-report</code></pre></div>
+    
+    <figure class="shot"><div class="frame">Screenshot to add: Playwright report summary</div><figcaption>Figure 2. Playwright HTML report with all tests passing.</figcaption></figure>
+  </li>
+  <li>
+    <h3>Ran it on every push</h3>
+    <p>The workflow Playwright generated runs the suite in GitHub Actions. I stored the test accounts as repository secrets and passed them to the test step.</p>
+<div class="code"><div class="lbl"><span>.github/workflows/playwright.yml (test step)</span><button type="button" class="copy">Copy</button></div><pre><code>- name: Run Playwright tests
+  run: npx playwright test
+  env:
+    BASE_URL: ${{ secrets.BASE_URL }}
+    CASHIER_EMAIL: ${{ secrets.CASHIER_EMAIL }}
+    CASHIER_PASSWORD: ${{ secrets.CASHIER_PASSWORD }}</code></pre></div>
+    <figure class="shot"><div class="frame">Screenshot to add: Actions run summary</div><figcaption>Figure 3. A green test run in GitHub Actions.</figcaption></figure>
+  </li>
+  <li>
+    <h3>Reported failures so they get fixed</h3>
+    <p>When a test fails, I write a defect report a developer can reproduce without asking me anything. This is the format I use, shown with an example of the kind of issue AUTH-03 exists to catch.</p>
+    <div class="tbl"><table>
+      <tr><th>Field</th><th>Example</th></tr>
+      <tr><td>Title</td><td>Cashier can open /admin by typing the URL</td></tr>
+      <tr><td>Severity</td><td>High: access control bypass</td></tr>
+      <tr><td>Steps</td><td>1. Sign in as a cashier. 2. Go to /admin.</td></tr>
+      <tr><td>Expected</td><td>403 and no admin data</td></tr>
+      <tr><td>Actual</td><td>Admin dashboard loads with the user list</td></tr>
+      <tr><td>Evidence</td><td>Playwright trace, screenshot, test AUTH-03</td></tr>
+    </table></div>
+  </li>
+</ol>
+
+<h2 id="found">What I found</h2>
+<ul>
+  <li>Writing the expected result before automating kept each test honest. A test can't quietly pass by checking the wrong thing.</li>
+  <li>Testing the API directly covers security gaps the UI can hide, such as a missing token check behind a hidden button.</li>
+  <li>With the suite running on every push, a broken login or stock count shows up in the pull request before it reaches the till.</li>
+</ul>
+
+<h2 id="next">What I'd do next</h2>
+<ul>
+  <li>Add tests for the sales and stock flows, starting with SALE-01, and for roles beyond cashier and admin.</li>
+  <li>Run an OWASP ZAP baseline scan in the same pipeline to catch common web vulnerabilities automatically.</li>
+  <li>Add mobile viewport runs, since cashiers may use tablets at the till.</li>
+</ul>
+
+      </div>
+      <nav class="pager" aria-label="More projects"><a href="detection-lab.html"><span>← Project 04</span>Detecting attacks and finding vulnerabilities with Splunk and OpenVAS</a><a href="../index.html#projects" style="text-align:right"><span>→</span>All projects</a></nav>
+    </article>
+  </div>
+</main>
+<footer>
+  <div class="wrap">© 2026 Eva Kamau</div>
+</footer>
+<script src="../script.js"></script>
+</body>
+</html>

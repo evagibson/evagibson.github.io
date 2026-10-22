@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Monitoring Windows and macOS endpoints with Wazuh · Eva Kamau</title>
+<meta name="description" content="How I deployed Wazuh SIEM in Docker, enrolled real laptops, and proved it works by triggering and investigating an alert.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="../index.html">Eva Kamau</a>
+    <nav aria-label="Sections">
+      <ul>
+        <li><a href="../index.html#skills">Skills</a></li>
+        <li><a href="../index.html#projects">Projects</a></li>
+        <li><a href="../index.html#certifications">Certifications</a></li>
+        <li><a href="../index.html#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<main class="entry">
+  <div class="wrap">
+    <article class="col">
+      <p class="crumbs"><a href="../index.html#projects">Projects</a> · <span class="track sec-l">Project 02 · Cybersecurity · SOC</span></p>
+      <h1>Monitoring Windows and macOS endpoints with Wazuh</h1>
+      <p class="dek">How I deployed Wazuh SIEM in Docker, enrolled real laptops, and proved it works by triggering and investigating an alert.</p>
+      <dl class="facts">
+<div><dt>Role it supports</dt><dd>SOC Analyst, DevSecOps</dd></div>
+<div><dt>Setting</dt><dd>Lab with real laptops</dd></div>
+<div><dt>Tools</dt><dd>Wazuh 4.9, Docker, Ubuntu, UFW, Microsoft Defender</dd></div>
+      </dl>
+      <div class="prose">
+<h2 id="problem">The problem</h2>
+<p>A small company with Windows and macOS laptops usually has antivirus on each machine but no single place to see what is happening across all of them. If someone tries to guess a password on three laptops in one evening, nobody notices. I wanted one dashboard that collects security events from every endpoint, flags suspicious activity, and lets me compare what a SIEM sees with what Microsoft Defender reports.</p>
+
+<h2 id="built">What I built</h2>
+<p>I ran Wazuh's manager, indexer and dashboard as Docker containers on one Ubuntu 22.04 host, and enrolled a Windows 11 laptop and a macOS laptop as agents. Only the dashboard is open to my browser. The agents talk to the manager on two dedicated ports.</p>
+<figure class="diagram">
+  <div class="dwrap">
+    <svg viewBox="0 0 720 300" role="img" aria-label="Windows and macOS endpoints send events to a Wazuh manager in Docker on Ubuntu; the analyst views the dashboard over HTTPS">
+      <defs><marker id="ah1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" class="d-head"/></marker></defs>
+      <rect x="20" y="40" width="170" height="70" rx="8" class="d-box"/>
+      <text x="36" y="70" class="d-t">Windows 11 laptop</text><text x="36" y="92" class="d-s">Wazuh agent + Defender</text>
+      <rect x="20" y="180" width="170" height="70" rx="8" class="d-box"/>
+      <text x="36" y="210" class="d-t">macOS laptop</text><text x="36" y="232" class="d-s">Wazuh agent</text>
+      <rect x="290" y="20" width="250" height="260" rx="10" class="d-zone"/>
+      <text x="306" y="44" class="d-s">Ubuntu 22.04 host · Docker</text>
+      <rect x="310" y="60" width="210" height="56" rx="8" class="d-hl"/>
+      <text x="326" y="86" class="d-t">wazuh.manager</text><text x="326" y="104" class="d-s">1514 events · 1515 enrol</text>
+      <rect x="310" y="130" width="210" height="56" rx="8" class="d-box"/>
+      <text x="326" y="156" class="d-t">wazuh.indexer</text><text x="326" y="174" class="d-s">stores and searches alerts</text>
+      <rect x="310" y="200" width="210" height="56" rx="8" class="d-box"/>
+      <text x="326" y="226" class="d-t">wazuh.dashboard</text><text x="326" y="244" class="d-s">web UI on 443</text>
+      <rect x="590" y="200" width="110" height="56" rx="8" class="d-box"/>
+      <text x="606" y="226" class="d-t">Analyst</text><text x="606" y="244" class="d-s">browser</text>
+      <path d="M190 75 L308 88" class="d-a" marker-end="url(#ah1)"/>
+      <path d="M190 215 L308 96" class="d-a" marker-end="url(#ah1)"/>
+      <path d="M415 116 L415 128" class="d-a" marker-end="url(#ah1)"/>
+      <path d="M415 186 L415 198" class="d-a" marker-end="url(#ah1)"/>
+      <path d="M588 228 L522 228" class="d-a" marker-end="url(#ah1)"/>
+    </svg>
+  </div>
+  <figcaption>Figure 1. Agents send events to the manager. The indexer stores them, and the dashboard is the only part I open to my browser.</figcaption>
+</figure>
+<p><strong>What it runs on:</strong> an Ubuntu 22.04 VM with 4 CPU cores, 8 GB RAM and 50 GB disk, Docker Engine with the Compose plugin, and the two laptops on the same network.</p>
+
+<h2 id="how">How I did it</h2>
+<ol class="steps">
+  <li>
+    <h3>Prepared the host</h3>
+    <p>The Wazuh indexer is built on OpenSearch, which fails to start with Ubuntu's default memory-map limit. I raised it and made the change survive reboots, so the stack wouldn't break the next time the server restarted.</p>
+<div class="code"><div class="lbl"><span>Ubuntu host</span><button type="button" class="copy">Copy</button></div><pre><code>sudo sysctl -w vm.max_map_count=262144
+echo "vm.max_map_count=262144" | sudo tee -a /etc/sysctl.conf</code></pre></div>
+  </li>
+  <li>
+    <h3>Opened only the ports Wazuh needs</h3>
+    <p>I kept UFW on and allowed four things: SSH for me, the dashboard, and the agents' event and enrolment ports. Everything else stays closed, which keeps the monitoring server from becoming a weak point itself.</p>
+<div class="code"><div class="lbl"><span>Ubuntu host</span><button type="button" class="copy">Copy</button></div><pre><code>sudo ufw allow OpenSSH
+sudo ufw allow 443/tcp     <span class="c"># dashboard</span>
+sudo ufw allow 1514/tcp    <span class="c"># agent events</span>
+sudo ufw allow 1515/tcp    <span class="c"># agent enrolment</span>
+sudo ufw enable
+sudo ufw status numbered</code></pre></div>
+  </li>
+  <li>
+    <h3>Deployed the stack from a pinned release</h3>
+    <p>I used Wazuh's official single-node Compose project and pinned a release tag. That keeps the manager and agent versions matched, because mismatched versions are a common reason agents fail to connect.</p>
+<div class="code"><div class="lbl"><span>Ubuntu host</span><button type="button" class="copy">Copy</button></div><pre><code>git clone https://github.com/wazuh/wazuh-docker.git -b v4.9.2
+cd wazuh-docker/single-node
+docker compose -f generate-indexer-certs.yml run --rm generator
+docker compose up -d
+docker compose ps</code></pre></div>
+    <p>The certificate step comes first because the three containers talk to each other over TLS. Once all three showed <code>running</code>, I signed in at <code>https://&lt;server-ip&gt;</code> and changed the default <code>admin</code> password straight away.</p>
+    <figure class="shot"><div class="frame">Screenshot to add: Wazuh dashboard home page</div><figcaption>Figure 2. The Wazuh dashboard after the first sign-in.</figcaption></figure>
+  </li>
+  <li>
+    <h3>Enrolled the Windows laptop</h3>
+    <p>In an administrator PowerShell window, I installed the agent silently, pointed it at the manager, and gave it a name I would recognise in alerts.</p>
+<div class="code"><div class="lbl"><span>Windows, PowerShell as administrator</span><button type="button" class="copy">Copy</button></div><pre><code>Invoke-WebRequest -Uri https://packages.wazuh.com/4.x/windows/wazuh-agent-4.9.2-1.msi -OutFile $env:tmp\wazuh-agent.msi
+msiexec.exe /i $env:tmp\wazuh-agent.msi /q WAZUH_MANAGER='192.168.1.50' WAZUH_AGENT_NAME='win-laptop-01'
+NET START WazuhSvc</code></pre></div>
+  </li>
+  <li>
+    <h3>Enrolled the Mac</h3>
+    <p>macOS reads the manager address from an environment file during installation. I used the <code>arm64</code> package for Apple silicon. Intel Macs need <code>intel64</code>.</p>
+<div class="code"><div class="lbl"><span>macOS Terminal</span><button type="button" class="copy">Copy</button></div><pre><code>curl -so wazuh-agent.pkg https://packages.wazuh.com/4.x/macos/wazuh-agent-4.9.2-1.arm64.pkg
+echo "WAZUH_MANAGER='192.168.1.50' &amp;&amp; WAZUH_AGENT_NAME='mac-01'" &gt; /tmp/wazuh_envs
+sudo installer -pkg ./wazuh-agent.pkg -target /
+sudo /Library/Ossec/bin/wazuh-control start</code></pre></div>
+    <figure class="shot"><div class="frame">Screenshot to add: Agents page showing win-laptop-01 and mac-01 as Active</div><figcaption>Figure 3. Both endpoints enrolled and active.</figcaption></figure>
+  </li>
+  <li>
+    <h3>Tested it with an attack I controlled</h3>
+    <p>A SIEM that has never caught anything hasn't been proven to work. So I caused an event I knew it should catch: I locked the Windows laptop and typed a wrong password several times. Windows logs each attempt as event ID 4625, the agent forwards it, and Wazuh rule 60122 fires. I then filtered for those alerts in <em>Threat Hunting</em>:</p>
+<div class="code"><div class="lbl"><span>Dashboard search</span><button type="button" class="copy">Copy</button></div><pre><code>agent.name:win-laptop-01 and rule.id:60122</code></pre></div>
+    <p>For each alert I read three fields: <code>data.win.eventdata.targetUserName</code>, <code>data.win.eventdata.ipAddress</code> and the timestamp. Those answer who was targeted, from where, and when, which is the first thing I write in any triage note.</p>
+    <figure class="shot"><div class="frame">Screenshot to add: Threat Hunting view filtered to rule 60122</div><figcaption>Figure 4. Failed logon alerts from the test, with the event fields expanded.</figcaption></figure>
+  </li>
+  <li>
+    <h3>Compared it with Microsoft Defender</h3>
+    <p>Finally, I opened the Defender portal for the same device and time window to see what each tool recorded.</p>
+    <figure class="shot"><div class="frame">Screenshot to add: Defender device timeline for the test window</div><figcaption>Figure 5. Defender's view of the same device and time window.</figcaption></figure>
+  </li>
+</ol>
+
+<h2 id="found">What I found</h2>
+<ul>
+  <li>Every failed logon from the test reached the dashboard as a rule 60122 alert, with the user, source and time attached. That proved the whole chain worked, from the endpoint to the agent, manager, indexer and dashboard.</li>
+  <li>Defender didn't treat a few wrong passwords as a threat, while Wazuh kept every attempt as an event. The two tools answer different questions. Defender blocks known threats, and the SIEM keeps the history you need to spot patterns such as repeated failures across several machines.</li>
+  <li>The two things most likely to break this setup are the indexer's memory limit and blocked agent ports. Getting both right first saved more time than any later step.</li>
+</ul>
+<div class="tbl"><table>
+  <tr><th>If you see</th><th>Cause and fix</th></tr>
+  <tr><td>The indexer container keeps restarting</td><td><code>vm.max_map_count</code> is too low. Raise it as in step 1, then run <code>docker compose restart</code>.</td></tr>
+  <tr><td>An agent is stuck on <em>Never connected</em></td><td>Port 1514 or 1515 is blocked, or the manager IP is wrong. Test with <code>Test-NetConnection 192.168.1.50 -Port 1514</code>.</td></tr>
+  <tr><td>The browser shows a certificate warning</td><td>This is expected with self-signed lab certificates. Use a proper certificate before exposing the dashboard beyond the lab.</td></tr>
+</table></div>
+
+<h2 id="next">What I'd do next</h2>
+<ul>
+  <li>Write a custom rule that alerts when the same account fails on more than one machine within ten minutes, a pattern a single laptop can't see.</li>
+  <li>Send alerts to email or Slack so nobody has to watch the dashboard.</li>
+  <li>Replace the self-signed certificates and put the dashboard behind a VPN.</li>
+</ul>
+
+      </div>
+      <nav class="pager" aria-label="More projects"><a href="lab-infrastructure.html"><span>← Project 01</span>My home lab: eight VMs behind a pfSense firewall</a><a href="honeypot-threat-intel.html" style="text-align:right"><span>Project 03 →</span>Turning honeypot attacks into STIX threat intelligence</a></nav>
+    </article>
+  </div>
+</main>
+<footer>
+  <div class="wrap">© 2026 Eva Kamau</div>
+</footer>
+<script src="../script.js"></script>
+</body>
+</html>
